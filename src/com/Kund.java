@@ -5,14 +5,14 @@ public class Kund {
     private String firstName;
     private String lastName;
     private String email;
-    private int personalIdentityNumber;
+    private int socialSecurityNumber;
 
 
     public Kund(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.personalIdentityNumber = personalIdentityNumber;
+        this.socialSecurityNumber = socialSecurityNumber;
     }
 
     public String getFirstName() {
@@ -39,12 +39,12 @@ public class Kund {
         this.email = email;
     }
 
-    public int getPersonalIdentityNumber (){
-        return personalIdentityNumber;
+    public int getSocialSecurityNumber (){
+        return socialSecurityNumber;
     }
 
-    public void setPersonalIdentityNumber (int personalIdentityNumber){
-        this.personalIdentityNumber = personalIdentityNumber;
+    public void setSocialSecurityNumber (int socialSecurityNumber){
+        this.socialSecurityNumber = socialSecurityNumber;
     }
 
 

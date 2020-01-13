@@ -2,10 +2,10 @@ package com;
 
 public class Konto {
     private int accountNumber;
-    private int accountBalance;
-    private int debt;
+    private double accountBalance;
+    private double debt;
 
-    public Konto(int accountNumber, int accountBalance, int debt) {
+    public Konto(int accountNumber, double accountBalance, double debt) {
         this.accountNumber = accountNumber;
         this.accountBalance = accountBalance;
         this.debt = debt;
@@ -34,6 +34,7 @@ public class Konto {
     public void setDebt{
         this.debt = debt;
     }
+
 
 }
 
