@@ -19,7 +19,7 @@ public class Konto {
         this.accountNumber = accountNumber;
     }
 
-    public int getAccountBalance() {
+    public double getAccountBalance() {
         return accountBalance;
     }
 
@@ -27,7 +27,7 @@ public class Konto {
         this.accountBalance = accountBalance;
     }
 
-    public int getDebt() {
+    public double getDebt() {
         return debt;
     }
 
