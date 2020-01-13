@@ -1,9 +1,13 @@
 package com;
 
-import java.util.Scanner;
+import java.util.Date;
+import java.util.UUID;
 
-public class JavaBanken {
-    JavaBanken() {
+public class JavaBank {
+
+    FileManager fm = new FileManager();
+
+    JavaBank() {
         System.out.println("Välkommen till Javabanken, vad kan vi hjälpa till med?");
         System.out.println("1: Skapa ny kund/konto");
         System.out.println("2: Ändra information om en kund");
@@ -12,10 +16,13 @@ public class JavaBanken {
         System.out.println("5: Öppna nytt konto till befintlig kund");
         System.out.println("6: Ändra saldo/skuld");
 
-        Scanner scan = new Scanner(System.in);
-        int number = scan.nextInt();
+        int number = Input.number("Mata in val: ");
         switch (number) {
             case 1: {
+                Account account = new Account(12345, 0, 0 );
+                fm.write(String.valueOf(new Date().getTime())+".txt",account.getList());
+                Customer customer = new Customer(Input.string("Mata in förnamn: "), Input.string("Mata in efternamn: "), Input.string("Mata in E-post adress: "), Input.number("Mata in personnummer: "));
+                fm.write(UUID.randomUUID()+"-"+ customer.getFirstName()+ customer.getLastName()+".txt", customer.getList());
                 break;
             }
             case 2: {
