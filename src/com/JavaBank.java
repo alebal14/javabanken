@@ -13,6 +13,22 @@ public class JavaBank {
     FileManager fm = new FileManager();
 
     JavaBank() {
+        buildDirectories();
+        printMenu();
+        selection();
+    }
+
+    private void buildDirectories() {
+        try {
+            Files.createDirectory(Paths.get("Javabank"));
+            Files.createDirectory(Paths.get("Javabank/Customer"));
+            Files.createDirectory(Paths.get("Javabank/Account"));
+        } catch (IOException e) {
+            //e.printStackTrace();
+        }
+    }
+
+    private void printMenu() {
         System.out.println("Välkommen till Javabanken, vad kan vi hjälpa till med?");
         System.out.println("1: Skapa ny kund/konto");
         System.out.println("2: Ändra information om en kund");
@@ -77,8 +93,6 @@ public class JavaBank {
             default:
                 System.out.println("#invalid input#");
                 selection();
-
         }
     }
-
 }
