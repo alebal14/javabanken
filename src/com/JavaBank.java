@@ -20,24 +20,29 @@ public class JavaBank {
         switch (number) {
             case 1: {
                 Account account = new Account(12345, 0, 0 );
-                fm.write(String.valueOf(new Date().getTime())+".txt",account.getList());
+                fm.write(new Date().getTime()+".txt",account.getList());
                 Customer customer = new Customer(Input.string("Mata in förnamn: "), Input.string("Mata in efternamn: "), Input.string("Mata in E-post adress: "), Input.number("Mata in personnummer: "));
                 fm.write(UUID.randomUUID()+"-"+ customer.getFirstName()+ customer.getLastName()+".txt", customer.getList());
                 break;
             }
             case 2: {
+                System.out.println("case 2");
                 break;
             }
             case 3: {
+                System.out.println("case 3");
                 break;
             }
             case 4: {
+                System.out.println("case 4");
                 break;
             }
             case 5: {
+                System.out.println("case 5");
                 break;
             }
             case 6: {
+                System.out.println("case 6");
                 break;
             }
             default:

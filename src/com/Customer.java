@@ -2,15 +2,10 @@ package com;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public class Customer {
-    private String firstName;
-    private String lastName;
-    private String email;
-    private int socialSecurityNumber;
     private HashMap<String, String> details = new HashMap();
 
 
