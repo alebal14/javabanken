@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class JavaBank {
@@ -61,7 +62,8 @@ public class JavaBank {
                 break;
             }
             case 2: {
-                for(String path:fm.find("Sofia")) {
+                 List<String> searchword = fm.find(Input.string("Mata in ett sökord: "));
+                for(String path:searchword) {
                     for(String line:fm.read(path)) {
                         System.out.println(line);
                     }
