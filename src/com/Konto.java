@@ -15,7 +15,7 @@ public class Konto {
         return accountNumber;
     }
 
-    public void setAccountNumber{
+    public void setAccountNumber(){
         this.accountNumber = accountNumber;
     }
 
@@ -23,7 +23,7 @@ public class Konto {
         return accountBalance;
     }
 
-    public void setAccountBalance{
+    public void setAccountBalance(){
         this.accountBalance = accountBalance;
     }
 
@@ -31,7 +31,7 @@ public class Konto {
         return debt;
     }
 
-    public void setDebt{
+    public void setDebt(){
         this.debt = debt;
     }
 
