@@ -34,42 +34,59 @@ public class JavaBank {
         System.out.println("4: Gör en överföring");
         System.out.println("5: Öppna nytt konto till befintlig kund");
         System.out.println("6: Ändra saldo/skuld");
+        System.out.println("0: Avsluta");
         System.out.println();
     }
 
     private void selection() {
         int selection = Input.number("Mata in val: ");
         switch (selection) {
+            case 0:
+                break;
             case 1: {
                 Account account = new Account(12345, 0, 0 );
                 fm.write("Javabank/Account/"+new Date().getTime()+".txt",account.getList());
                 Customer customer = new Customer(Input.string("Mata in förnamn: "), Input.string("Mata in efternamn: "), Input.string("Mata in E-post adress: "), Input.number("Mata in personnummer: "));
-                fm.write("Javabank/Customer/"+UUID.randomUUID()+"-"+ customer.getFirstName()+ customer.getLastName()+".txt", customer.getList());
+                String customerPath = "Javabank/Customer/"+UUID.randomUUID()+"-"+ customer.getFirstName()+ customer.getLastName()+".txt";
+                fm.write(customerPath, customer.getList());
+                System.out.println("Välkommen till Javabanken!");
+                System.out.println("Följande information har lagts till:");
+                System.out.println();
+                for(String line: fm.read(customerPath)) {
+                    System.out.println(line);
+                }
+                selection();
                 break;
             }
             case 2: {
                 System.out.println("case 2");
+                fm.find("dfgdf");
+                selection();
                 break;
             }
             case 3: {
                 System.out.println("case 3");
+                selection();
                 break;
             }
             case 4: {
                 System.out.println("case 4");
+                selection();
                 break;
             }
             case 5: {
                 System.out.println("case 5");
+                selection();
                 break;
             }
             case 6: {
                 System.out.println("case 6");
+                selection();
                 break;
             }
             default:
                 System.out.println("#invalid input#");
-                selection = Input.number("Mata in val: ");
+                selection();
         }
     }
 }

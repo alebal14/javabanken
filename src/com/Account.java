@@ -43,7 +43,7 @@ public class Account {
         for(String key:details.keySet()) {
             detailsList.add(key+":"+details.get(key));
         }
-        System.out.println(detailsList);
+        //System.out.println(detailsList);
         return detailsList;
     }
 }
