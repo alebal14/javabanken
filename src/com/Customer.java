@@ -13,6 +13,7 @@ public class Customer {
         details.put("lastname", lastName);
         details.put("email", email);
         details.put("ssn", String.valueOf(ssn));
+        //details.put("accounts", )
     }
 
     public String getFirstName() {

@@ -2,7 +2,9 @@ package com;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.SecureRandom;
 import java.util.Date;
 import java.util.UUID;
 
@@ -44,9 +46,9 @@ public class JavaBank {
             case 0:
                 break;
             case 1: {
-                Account account = new Account(12345, 0, 0 );
-                fm.write("Javabank/Account/"+new Date().getTime()+".txt",account.getList());
                 Customer customer = new Customer(Input.string("Mata in förnamn: "), Input.string("Mata in efternamn: "), Input.string("Mata in E-post adress: "), Input.number("Mata in personnummer: "));
+                Account account = new Account(0, 0, 0,  customer.getSocialSecurityNumber());
+                fm.write("Javabank/Account/"+new Date().getTime()+".txt",account.getList());
                 String customerPath = "Javabank/Customer/"+UUID.randomUUID()+"-"+ customer.getFirstName()+ customer.getLastName()+".txt";
                 fm.write(customerPath, customer.getList());
                 System.out.println("Välkommen till Javabanken!");
@@ -59,8 +61,12 @@ public class JavaBank {
                 break;
             }
             case 2: {
-                System.out.println("case 2");
-                fm.find("dfgdf");
+                for(String path:fm.find("Sofia")) {
+                    for(String line:fm.read(path)) {
+                        System.out.println(line);
+                    }
+                    System.out.println();
+                }
                 selection();
                 break;
             }

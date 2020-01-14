@@ -39,7 +39,7 @@ public class FileManager {
         }
         return fileData;
     }
-    public void find(String searchTerm) {
+    public List<String> find(String searchTerm) {
         List<String> filesList = new ArrayList<>();
         try {
             Files.list(Paths.get("Javabank/Customer"))
@@ -50,14 +50,22 @@ public class FileManager {
 
         }
 
+        List<String> newFileList = new ArrayList<>();
+
         for(String path: filesList) {
-            List<String> = Files.readAllLines(Path.get
-            )
+            try {
+                List<String> propertyList = Files.readAllLines(Paths.get(path));
+                for(String line:propertyList) {
+                    if(line.contains(searchTerm)) {
+                        newFileList.add(path);
+                    }
+                }
+            } catch(IOException e) {
+
+            }
         }
 
-        filesList.forEach(System.out::println);
-        //return new ArrayList<>();
+        //filesList.forEach(System.out::println);
+        return newFileList;
     }
 }
-// ca 11:35 start
-// 11:50 stop
