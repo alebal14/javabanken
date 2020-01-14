@@ -1,16 +1,10 @@
 package com;
 
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public class Customer {
-    private String firstName;
-    private String lastName;
-    private String email;
-    private int socialSecurityNumber;
     private HashMap<String, String> details = new HashMap();
 
 
@@ -19,6 +13,7 @@ public class Customer {
         details.put("lastname", lastName);
         details.put("email", email);
         details.put("ssn", String.valueOf(ssn));
+        //details.put("accounts", )
     }
 
     public String getFirstName() {

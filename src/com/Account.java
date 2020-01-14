@@ -8,10 +8,11 @@ public class Account {
 
     private HashMap<String, String> details = new HashMap<>();
 
-    public Account(int accountNumber, double accountBalance, double debt) {
+    public Account(int accountNumber, double accountBalance, double debt, int ssn) {
         this.details.put("accountnumber", String.valueOf(accountNumber));
         this.details.put("accountbalance", String.valueOf(accountBalance));
         this.details.put("debt", String.valueOf(debt));
+        this.details.put("ssn", String.valueOf(ssn));
     }
 
     public void setAccountNumber(int accountNumber){
@@ -38,12 +39,20 @@ public class Account {
         return Double.parseDouble(details.get("debt"));
     }
 
+    public void setSsn(int ssn) {
+        details.put("ssn", String.valueOf(ssn));
+    }
+
+    public int getSsn() {
+        return Integer.parseInt(details.get("ssn"));
+    }
+
     public List<String> getList() {
         List<String> detailsList = new ArrayList<>();
         for(String key:details.keySet()) {
             detailsList.add(key+":"+details.get(key));
         }
-        System.out.println(detailsList);
+        //System.out.println(detailsList);
         return detailsList;
     }
 }
