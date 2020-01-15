@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class JavaBank {
@@ -36,6 +37,7 @@ public class JavaBank {
         System.out.println("4: Gör en överföring");
         System.out.println("5: Öppna nytt konto till befintlig kund");
         System.out.println("6: Ändra saldo/skuld");
+        System.out.println("7: Sök Kund");
         System.out.println("0: Avsluta");
         System.out.println();
     }
@@ -47,52 +49,79 @@ public class JavaBank {
                 break;
             case 1: {
                 Customer customer = new Customer(Input.string("Mata in förnamn: "), Input.string("Mata in efternamn: "), Input.string("Mata in E-post adress: "), Input.number("Mata in personnummer: "));
-                Account account = new Account(0, 0, 0,  customer.getSocialSecurityNumber());
-                fm.write("Javabank/Account/"+new Date().getTime()+".txt",account.getList());
-                String customerPath = "Javabank/Customer/"+UUID.randomUUID()+"-"+ customer.getFirstName()+ customer.getLastName()+".txt";
+                UniqueRandomNr uniqueRandomNr = new UniqueRandomNr();
+                Account account = new Account(uniqueRandomNr.randomNumber(), 0, 0, customer.getSocialSecurityNumber());
+                fm.write("Javabank/Account/" + new Date().getTime() + ".txt", account.getList());
+                String customerPath = "Javabank/Customer/" + UUID.randomUUID() + "-" + customer.getFirstName() + customer.getLastName() + ".txt";
                 fm.write(customerPath, customer.getList());
                 System.out.println("Välkommen till Javabanken!");
                 System.out.println("Följande information har lagts till:");
                 System.out.println();
-                for(String line: fm.read(customerPath)) {
+                for (String line : fm.read(customerPath)) {
                     System.out.println(line);
                 }
                 selection();
                 break;
             }
             case 2: {
-                for(String path:fm.find("Sofia")) {
-                    for(String line:fm.read(path)) {
-                        System.out.println(line);
-                    }
-                    System.out.println();
-                }
+                serachSSN();
                 selection();
                 break;
             }
             case 3: {
-                System.out.println("case 3");
+                serachSSN();
                 selection();
                 break;
             }
             case 4: {
-                System.out.println("case 4");
+                serachSSN();
                 selection();
                 break;
             }
             case 5: {
-                System.out.println("case 5");
+                serachSSN();
                 selection();
                 break;
             }
             case 6: {
-                System.out.println("case 6");
+                serachSSN();
                 selection();
                 break;
             }
-            default:
+            case 7: {
+                searchNames();
+                break;
+            }
+            default: {
                 System.out.println("#invalid input#");
                 selection();
+            }
         }
     }
-}
+
+        public void serachSSN () {
+            List<String> searchword = fm.find(Input.string("Mata in ett sökord: "));
+            for (String path : searchword) {
+                for (String line : fm.read(path)) {
+                    System.out.println(line);
+                }
+                System.out.println();
+            }
+
+        }
+
+        public void searchNames () {
+            List<String> searchword = fm.find(Input.string("Mata in ett sökord: "));
+            for (String path : searchword) {
+                for (String line : fm.read(path)) {
+                    System.out.println(line);
+                }
+                System.out.println();
+            }
+        }
+
+    }
+
+
+
+

@@ -18,6 +18,7 @@ public class FileManager {
             //e.printStackTrace();
         }
     }
+
     public void write(String filePath, List<String> data) {
         Path path = Paths.get(filePath);
         try {
@@ -29,16 +30,30 @@ public class FileManager {
             //e.printStackTrace();
         }
     }
+
     public List<String> read(String filePath) {
         Path path = Paths.get(filePath);
         List<String> fileData = new ArrayList<>();
         try {
             fileData = Files.readAllLines(path);
-        } catch(IOException e) {
+        } catch (IOException e) {
             //e.printStackTrace();
         }
         return fileData;
     }
+
+    /*
+    public void delete(String filePath) {
+        Path path = Paths.get(filePath);
+        try {
+
+        } catch (IOException e) {
+            //e.printStackTrace();
+        }
+    }
+
+     */
+
     public List<String> find(String searchTerm) {
         List<String> filesList = new ArrayList<>();
         try {
@@ -49,24 +64,30 @@ public class FileManager {
         } catch (IOException e) {
 
         }
-        ///
 
         List<String> newFileList = new ArrayList<>();
 
-        for(String path: filesList) {
+        for (String path : filesList) {
             try {
                 List<String> propertyList = Files.readAllLines(Paths.get(path));
-                for(String line:propertyList) {
-                    if(line.contains(searchTerm)) {
+                for (String line : propertyList) {
+                    if (line.contains(searchTerm)) {
                         newFileList.add(path);
                     }
                 }
-            } catch(IOException e) {
+            } catch (IOException e) {
 
             }
         }
 
         //filesList.forEach(System.out::println);
         return newFileList;
+    }
+
+    public List<String> getFilesPaths(String folderName) throws IOException {
+        List<String> paths = new ArrayList<>();
+        Files.walk(Paths.get(folderName)).forEach(path -> paths.add(path.toString()));
+        paths.remove(0);
+        return paths;
     }
 }
