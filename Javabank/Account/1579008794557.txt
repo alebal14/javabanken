@@ -1,0 +1,4 @@
+accountnumber:0
+accountbalance:0.0
+debt:0.0
+ssn:121233
