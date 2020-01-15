@@ -1,4 +1,0 @@
-firstname:jdkajfd
-email:lkdsla
-lastname:lkdalsö
-ssn:121233
