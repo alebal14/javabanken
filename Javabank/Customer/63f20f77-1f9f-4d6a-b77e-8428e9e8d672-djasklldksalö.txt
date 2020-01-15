@@ -1,4 +1,0 @@
-firstname:djaskl
-email:ldjsal
-lastname:ldksalö
-ssn:-1
