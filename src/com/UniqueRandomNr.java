@@ -7,17 +7,10 @@ import java.util.List;
 
 public class UniqueRandomNr {
 
-    public List<String> getAccountFilesPaths() throws IOException {
-        List<String> paths = new ArrayList<>();
-        Files.walk(Paths.get("Javabank/Account/")).forEach(path -> paths.add(path.toString()));
-        paths.remove(0);
-        return paths;
-    }
-
     public List<Integer> getAllAccountsNr() throws IOException {
         List<Integer> currentAccountsNumbers = new ArrayList<>();
-
-        for (String path : getAccountFilesPaths()) {
+        FileManager fileManager = new FileManager();
+        for (String path : fileManager.getFilesPaths("Javabank/Account")) {
             Path accountFilePath = Path.of(path);
             String account_number =  Files.readAllLines(accountFilePath).toString();
             int at = account_number.indexOf(",");

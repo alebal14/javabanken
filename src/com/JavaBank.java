@@ -48,7 +48,8 @@ public class JavaBank {
                 break;
             case 1: {
                 Customer customer = new Customer(Input.string("Mata in förnamn: "), Input.string("Mata in efternamn: "), Input.string("Mata in E-post adress: "), Input.number("Mata in personnummer: "));
-                Account account = new Account(0, 0, 0,  customer.getSocialSecurityNumber());
+                UniqueRandomNr uniqueRandomNr = new UniqueRandomNr();
+                Account account = new Account(uniqueRandomNr.randomNumber(), 0, 0,  customer.getSocialSecurityNumber());
                 fm.write("Javabank/Account/"+new Date().getTime()+".txt",account.getList());
                 String customerPath = "Javabank/Customer/"+UUID.randomUUID()+"-"+ customer.getFirstName()+ customer.getLastName()+".txt";
                 fm.write(customerPath, customer.getList());
