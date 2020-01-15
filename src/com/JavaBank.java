@@ -5,7 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 public class JavaBank {
 
@@ -46,7 +48,8 @@ public class JavaBank {
                 break;
             case 1: {
                 Customer customer = new Customer(Input.string("Mata in förnamn: "), Input.string("Mata in efternamn: "), Input.string("Mata in E-post adress: "), Input.number("Mata in personnummer: "));
-                Account account = new Account(0, 0, 0,  customer.getSocialSecurityNumber());
+                UniqueRandomNr uniqueRandomNr = new UniqueRandomNr();
+                Account account = new Account(uniqueRandomNr.randomNumber(), 0, 0,  customer.getSocialSecurityNumber());
                 fm.write("Javabank/Account/"+new Date().getTime()+".txt",account.getList());
                 String customerPath = "Javabank/Customer/"+UUID.randomUUID()+"-"+ customer.getFirstName()+ customer.getLastName()+".txt";
                 fm.write(customerPath, customer.getList());
@@ -60,12 +63,18 @@ public class JavaBank {
                 break;
             }
             case 2: {
-                searchNames();
+                 List<String> searchword = fm.find(Input.string("Mata in ett sökord: "));
+                for(String path:searchword) {
+                    for(String line:fm.read(path)) {
+                        System.out.println(line);
+                    }
+                    System.out.println();
+                }
                 selection();
                 break;
             }
             case 3: {
-                searchSSNNumbers();
+                System.out.println("case 3");
                 selection();
                 break;
             }
@@ -80,37 +89,13 @@ public class JavaBank {
                 break;
             }
             case 6: {
-                searchSSNNumbers();
-                // new functions //
+                System.out.println("case 6");
                 selection();
                 break;
             }
             default:
                 System.out.println("#invalid input#");
                 selection();
-        }
-    }
-
-    public void searchSSNNumbers(){
-        int num = Input.number("Mata in ett personnummer : ");
-        String searchnumber = String.valueOf(num);
-
-        List<String> searchNumbermethod = fm.find(searchnumber);
-        for(String path:searchNumbermethod) {
-            for(String line:fm.read(path)) {
-                System.out.println(line);
-            }
-            System.out.println();
-        }
-    }
-
-    public void searchNames(){
-        List<String> searchword = fm.find(Input.string("Mata in ett sökord: "));
-        for(String path:searchword) {
-            for(String line:fm.read(path)) {
-                System.out.println(line);
-            }
-            System.out.println();
         }
     }
 }

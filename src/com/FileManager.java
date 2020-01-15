@@ -64,11 +64,16 @@ public class FileManager {
             } catch(IOException e) {
 
             }
-    }
-
-
+        }
 
         //filesList.forEach(System.out::println);
         return newFileList;
+    }
+
+    public List<String> getFilesPaths(String folderName) throws IOException {
+        List<String> paths = new ArrayList<>();
+        Files.walk(Paths.get(folderName)).forEach(path -> paths.add(path.toString()));
+        paths.remove(0);
+        return paths;
     }
 }
