@@ -8,18 +8,6 @@ import java.util.List;
 public class UniqueRandomNr {
 
 
-
-    public static void main(String[] args) throws IOException {
-
-        UniqueRandomNr uniqueRandomNr = new UniqueRandomNr();
-        System.out.println(uniqueRandomNr.generateUniqueAccountNr());
-
-    }
-
-
-
-
-
     public List<String> getAccountFilesPaths() throws IOException {
         List<String> paths = new ArrayList<>();
         Files.walk(Paths.get("Javabank/Account/")).forEach(path -> paths.add(path.toString()));
