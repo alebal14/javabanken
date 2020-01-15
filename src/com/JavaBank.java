@@ -5,9 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class JavaBank {
 
@@ -63,18 +61,12 @@ public class JavaBank {
                 break;
             }
             case 2: {
-                 List<String> searchword = fm.find(Input.string("Mata in ett sökord: "));
-                for(String path:searchword) {
-                    for(String line:fm.read(path)) {
-                        System.out.println(line);
-                    }
-                    System.out.println();
-                }
+                searchNames();
                 selection();
                 break;
             }
             case 3: {
-                System.out.println("case 3");
+                searchSSNNumbers();
                 selection();
                 break;
             }
@@ -89,13 +81,37 @@ public class JavaBank {
                 break;
             }
             case 6: {
-                System.out.println("case 6");
+                searchSSNNumbers();
+                // new functions //
                 selection();
                 break;
             }
             default:
                 System.out.println("#invalid input#");
                 selection();
+        }
+    }
+
+    public void searchSSNNumbers(){
+        int num = Input.number("Mata in ett personnummer : ");
+        String searchnumber = String.valueOf(num);
+
+        List<String> searchNumbermethod = fm.find(searchnumber);
+        for(String path:searchNumbermethod) {
+            for(String line:fm.read(path)) {
+                System.out.println(line);
+            }
+            System.out.println();
+        }
+    }
+
+    public void searchNames(){
+        List<String> searchword = fm.find(Input.string("Mata in ett sökord: "));
+        for(String path:searchword) {
+            for(String line:fm.read(path)) {
+                System.out.println(line);
+            }
+            System.out.println();
         }
     }
 }
