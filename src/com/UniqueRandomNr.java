@@ -7,7 +7,6 @@ import java.util.List;
 
 public class UniqueRandomNr {
 
-
     public List<String> getAccountFilesPaths() throws IOException {
         List<String> paths = new ArrayList<>();
         Files.walk(Paths.get("Javabank/Account/")).forEach(path -> paths.add(path.toString()));

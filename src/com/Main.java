@@ -10,13 +10,9 @@ import java.util.stream.Stream;
 
 public class Main {
 
-<<<<<<< HEAD
+
     public static void main(String[] args) throws IOException {
+            JavaBank javaBank = new JavaBank();
 
-
-=======
-    public static void main(String[] args) {
-        JavaBank javaBank = new JavaBank();
->>>>>>> master
     }
 }
