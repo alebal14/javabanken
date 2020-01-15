@@ -1,4 +1,0 @@
-firstname:Dennis
-email:hotmail.com
-lastname:Karl
-ssn:637281

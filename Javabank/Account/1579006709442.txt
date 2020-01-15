@@ -1,4 +1,0 @@
-accountnumber:1812279906
-accountbalance:0.0
-debt:0.0
-ssn:123456
