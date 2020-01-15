@@ -4,7 +4,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 abstract public class Input {
-    private static Scanner scan  = new Scanner(System.in);
+    private static Scanner scan = new Scanner(System.in);
     private static String input;
 
     public static String string(String prompt) {
@@ -19,20 +19,19 @@ abstract public class Input {
     }
 
     public static int number(String prompt) {
-        System.out.print(prompt);
         int inputInt = -1;
-        try {
-            input = scan.nextLine();
+        boolean everythingIsFine = true;
+        do {
+            System.out.print(prompt);
             try {
+                input = scan.nextLine();
                 inputInt = Integer.parseInt(input);
+                everythingIsFine = true;
             } catch (NumberFormatException e) {
                 System.out.println("#invalid input#");
-                number(prompt);
+                everythingIsFine = false;
             }
-        } catch (InputMismatchException e) {
-            System.out.println("#invalid input#");
-            number(prompt);
-        }
+        } while (!everythingIsFine);
         return inputInt;
     }
 }
