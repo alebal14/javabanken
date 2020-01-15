@@ -1,0 +1,4 @@
+firstname:Sofia
+email:Mail
+lastname:Gren
+ssn:123456
