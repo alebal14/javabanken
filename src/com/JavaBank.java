@@ -71,22 +71,22 @@ public class JavaBank {
                 break;
             }
             case 3: {
-                serachSSN();
+                searchSSN();
                 selection();
                 break;
             }
             case 4: {
-                serachSSN();
+                searchSSN();
                 selection();
                 break;
             }
             case 5: {
-                serachSSN();
+                searchSSN();
                 selection();
                 break;
             }
             case 6: {
-                serachSSN();
+                searchSSN();
                 selection();
                 break;
             }
@@ -133,10 +133,13 @@ public class JavaBank {
         System.out.println("Din information har nu uppdaterats");
     }
 
-        public void serachSSN () {
-            List<String> searchword = fm.find(Input.string("Mata in ett sökord: "));
-            for (String path : searchword) {
-                for (String line : fm.read(path)) {
+        public void searchSSN () {
+            int num = Input.number("Mata in ett personnummer : ");
+            String searchnumber = String.valueOf(num);
+
+            List<String> searchNumbermethod = fm.find(searchnumber);
+            for(String path:searchNumbermethod) {
+                for(String line:fm.read(path)) {
                     System.out.println(line);
                 }
                 System.out.println();
