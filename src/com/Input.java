@@ -20,7 +20,7 @@ abstract public class Input {
 
     public static int number(String prompt) {
         int inputInt = -1;
-        boolean everythingIsFine = true;
+        boolean everythingIsFine;
         do {
             System.out.print(prompt);
             try {

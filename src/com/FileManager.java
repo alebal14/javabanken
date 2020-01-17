@@ -42,17 +42,17 @@ public class FileManager {
         return fileData;
     }
 
-    /*
+
     public void delete(String filePath) {
         Path path = Paths.get(filePath);
-        try {
-
-        } catch (IOException e) {
-            //e.printStackTrace();
+        if(Files.exists(path)) {
+            try {
+                Files.delete(path);
+            } catch (IOException e) {
+                //e.printStackTrace();
+            }
         }
     }
-
-     */
 
     public List<String> find(String searchTerm) {
         List<String> filesList = new ArrayList<>();
