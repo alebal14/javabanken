@@ -1,11 +1,8 @@
 package com;
 
-import java.io.IOException;
-
 public class Main {
 
-
-    public static void main(String[] args) throws IOException {
-            JavaBank javaBank = new JavaBank();
+    public static void main(String[] args) {
+        JavaBank javaBank = new JavaBank();
     }
 }
