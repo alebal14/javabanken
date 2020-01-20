@@ -1,7 +1,5 @@
 package com;
 
-import com.sun.source.tree.ClassTree;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -11,12 +9,18 @@ import java.util.UUID;
 
 public class JavaBank {
 
-    FileManager fm = new FileManager();
+    private FileManager fm;
+    private int input;
+    private UniqueRandomNr urn = new UniqueRandomNr();
 
     JavaBank() {
+        fm = new FileManager();
         buildDirectories();
-        printMenu();
-        selection();
+        printMainMenu();
+
+        input = Input.number("Mata in val: ");
+
+        mainSelection();
     }
 
     private void buildDirectories() {
@@ -24,25 +28,65 @@ public class JavaBank {
             Files.createDirectory(Paths.get("Javabank"));
             Files.createDirectory(Paths.get("Javabank/Customer"));
             Files.createDirectory(Paths.get("Javabank/Account"));
+            Files.createDirectory(Paths.get("Javabank/Personell"));
         } catch (IOException e) {
             //e.printStackTrace();
         }
     }
 
-    private void printMenu() {
-        System.out.println("Välkommen till Javabanken, vad kan vi hjälpa till med?");
-        System.out.println("1: Skapa ny kund/konto");
-        System.out.println("2: Ändra information om en kund");
-        System.out.println("3: Ta bort en kund från Javabanken");
-        System.out.println("4: Gör en överföring");
-        System.out.println("5: Öppna nytt konto till befintlig kund");
-        System.out.println("6: Ändra saldo/skuld");
-        System.out.println("7: Sök Kund");
-        System.out.println("0: Avsluta");
-        System.out.println();
+    private void printMainMenu() {
+        System.out.println("Välkommen till Javabanken!");
+        System.out.println("----------------------------------------");
+        System.out.println("1. Sök kund");
+        System.out.println("2. Skapa kund");
+        System.out.println("3. Personal");
+        System.out.println("666. Redigera kund");
+        System.out.println("0. Avsluta\n");
+    }
+    private void printSearchMenu() {
+        System.out.println("----------------------------------------");
+        System.out.println("1. Sök namn");
+        System.out.println("2. Sök personnummer");
+        System.out.println("0. Tillbaka\n");
     }
 
-    private void selection() {
+    private void mainSelection() {
+        switch (input) {
+            case 0:
+                break;
+            case 1:
+                printSearchMenu();
+                input = Input.number("Mata in val: ");
+                searchSelection();
+                break;
+            case 2:
+                Customer customer = createCustomer();
+                fm.write("Javabank/Customer/"+ UUID.randomUUID()+"-"+customer.getFirstName()+"_"+customer.getLastName()+".txt", customer.getList());
+
+                Account account = new Account(urn.randomNumber(), 0, 0, customer.getSocialSecurityNumber());
+                fm.write("Javabank/Account/"+new Date().getTime()+".txt", account.getList());
+
+                System.out.println("Skapade kund > "+customer.getFirstName()+" "+customer.getLastName()+"\nmed konto: "+account.getAccountNumber());
+
+                printMainMenu();
+                input = Input.number("Mata in val: ");
+                mainSelection();
+                break;
+            case 3:
+                // Print personell register.
+                break;
+            case 666:
+                editCustomerFile();
+                printMainMenu();
+                input = Input.number("Mata in val: ");
+                mainSelection();
+                break;
+            default:
+                System.out.println("#invalid input#");
+                input = Input.number("Mata in val: ");
+                break;
+        }
+        /*
         int selection = Input.number("Mata in val: ");
         switch (selection) {
             case 0:
@@ -97,6 +141,25 @@ public class JavaBank {
                 System.out.println("#invalid input#");
                 selection();
             }
+        }*/
+    }
+
+    private void searchSelection() {
+        switch (input) {
+            case 0:
+                printMainMenu();
+                input = Input.number("Mata in val: ");
+                mainSelection();
+                break;
+            case 1:
+                // Search customer by name.
+                break;
+            case 2:
+                // Search customer by ssn.
+                break;
+            default:
+
+                break;
         }
     }
 
