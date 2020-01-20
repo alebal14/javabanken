@@ -45,8 +45,15 @@ public class JavaBank {
     }
     private void printSearchMenu() {
         System.out.println("----------------------------------------");
-        System.out.println("1. Sök namn");
-        System.out.println("2. Sök personnummer");
+        System.out.println("1. Sök namn"); // return list of customers.
+        System.out.println("2. Sök personnummer"); // return list of customers.
+        System.out.println("0. Tillbaka\n");
+    }
+
+    private void printCustomerOptions() {
+        System.out.println("----------------------------------------");
+        System.out.println("1. Redigera personlig information");
+        System.out.println("2. Redigera konto information"); // return list of accounts.
         System.out.println("0. Tillbaka\n");
     }
 
@@ -86,62 +93,6 @@ public class JavaBank {
                 input = Input.number("Mata in val: ");
                 break;
         }
-        /*
-        int selection = Input.number("Mata in val: ");
-        switch (selection) {
-            case 0:
-                break;
-            case 1: {
-                Customer customer = createCustomer();
-                UniqueRandomNr uniqueRandomNr = new UniqueRandomNr();
-                Account account = new Account(uniqueRandomNr.randomNumber(), 0, 0, customer.getSocialSecurityNumber());
-                fm.write("Javabank/Account/" + new Date().getTime() + ".txt", account.getList());
-                String customerPath = "Javabank/Customer/" + UUID.randomUUID() + "-" + customer.getFirstName() + customer.getLastName() + ".txt";
-                fm.write(customerPath, customer.getList());
-                System.out.println("Välkommen till Javabanken!");
-                System.out.println("Följande information har lagts till:");
-                System.out.println();
-                for (String line : fm.read(customerPath)) {
-                    System.out.println(line);
-                }
-                selection();
-                break;
-            }
-            case 2: {
-                editCustomerFile();
-                selection();
-                break;
-            }
-            case 3: {
-                searchSSN();
-                selection();
-                break;
-            }
-            case 4: {
-                searchSSN();
-                selection();
-                break;
-            }
-            case 5: {
-                searchSSN();
-                selection();
-                break;
-            }
-            case 6: {
-                searchSSN();
-                selection();
-                break;
-            }
-            case 7: {
-
-                searchNames();
-                break;
-            }
-            default: {
-                System.out.println("#invalid input#");
-                selection();
-            }
-        }*/
     }
 
     private void searchSelection() {
@@ -161,6 +112,10 @@ public class JavaBank {
 
                 break;
         }
+    }
+
+    private void customerOptionsSelection() {
+
     }
 
     public Customer createCustomer() {
