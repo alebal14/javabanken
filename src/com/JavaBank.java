@@ -134,10 +134,13 @@ public class JavaBank {
     }
 
     public void editCustomerFile() {
-        List<String> searchword = fm.find(Input.string("Mata in ett sökord: "));
+        int num = Input.number("Mata in personnummer : ");
+        String searchNumber = String.valueOf(num);
+
+        List<String> searchForSSN = fm.find(searchNumber);
         String fileDir = "";
         String ssn = "";
-        for (String path : searchword) {
+        for (String path : searchForSSN) {
             fileDir = path;
             for (String line : fm.read(path)) {
                 System.out.println(line);
