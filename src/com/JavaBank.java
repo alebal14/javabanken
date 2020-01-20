@@ -2,29 +2,33 @@ package com;
 
 import com.sun.source.tree.ClassTree;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 public class JavaBank {
 
     FileManager fm = new FileManager();
 
-    JavaBank() {
+    JavaBank() throws Exception {
         buildDirectories();
         printMenu();
         selection();
     }
 
-    ///
 
     private void buildDirectories() {
         try {
             Files.createDirectory(Paths.get("Javabank"));
-            Files.createDirectory(Paths.get("Javabank/Staffmembers.txt"));
             Files.createDirectory(Paths.get("Javabank/Customer"));
             Files.createDirectory(Paths.get("Javabank/Account"));
         } catch (IOException e) {
@@ -41,11 +45,12 @@ public class JavaBank {
         System.out.println("5: Öppna nytt konto till befintlig kund");
         System.out.println("6: Ändra saldo/skuld");
         System.out.println("7: Sök Kund");
+        System.out.println("8: Visa information om personal");
         System.out.println("0: Avsluta");
         System.out.println();
     }
 
-    private void selection() {
+    private void selection() throws Exception {
         int selection = Input.number("Mata in val: ");
         switch (selection) {
             case 0:
@@ -92,8 +97,11 @@ public class JavaBank {
                 break;
             }
             case 7: {
-
                 searchNames();
+                break;
+            }
+            case 8: {
+                showStaffmembers();
                 break;
             }
             default: {
@@ -150,7 +158,7 @@ public class JavaBank {
             }
         }
 
-        if(fm.read(fileDir).isEmpty()) {
+        if (fm.read(fileDir).isEmpty()) {
             System.out.println("Invalid search word!");
             return;
         }
@@ -168,30 +176,57 @@ public class JavaBank {
         System.out.println("Din information har nu uppdaterats");
     }
 
-        public void searchSSN () {
-            int num = Input.number("Mata in ett personnummer : ");
-            String searchnumber = String.valueOf(num);
+    public void searchSSN() {
+        int num = Input.number("Mata in ett personnummer : ");
+        String searchnumber = String.valueOf(num);
 
-            List<String> searchNumbermethod = fm.find(searchnumber);
-            for(String path:searchNumbermethod) {
-                for(String line:fm.read(path)) {
-                    System.out.println(line);
-                }
-                System.out.println();
+        List<String> searchNumbermethod = fm.find(searchnumber);
+        for (String path : searchNumbermethod) {
+            for (String line : fm.read(path)) {
+                System.out.println(line);
             }
+            System.out.println();
         }
-
-        public void searchNames () {
-            List<String> searchword = fm.find(Input.string("Mata in ett sökord: "));
-            for (String path : searchword) {
-                for (String line : fm.read(path)) {
-                    System.out.println(line);
-                }
-                System.out.println();
-            }
-        }
-
     }
+
+    public void searchNames() {
+        List<String> searchword = fm.find(Input.string("Mata in ett sökord: "));
+        for (String path : searchword) {
+            for (String line : fm.read(path)) {
+                System.out.println(line);
+            }
+            System.out.println();
+        }
+    }
+
+    public void showStaffmembers() throws IOException {
+        BufferedReader reader;
+        try {
+            reader = new BufferedReader(new FileReader(
+                    "Javabank/Staffmembers/Staffmembers.txt"));
+            String line = reader.readLine();
+            while (line != null) {
+                System.out.println(line);
+                // read next line
+                line = reader.readLine();
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
