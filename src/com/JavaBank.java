@@ -1,6 +1,6 @@
 package com;
 
-import com.sun.jdi.IntegerType;
+import com.sun.source.tree.ClassTree;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -48,7 +48,7 @@ public class JavaBank {
             case 0:
                 break;
             case 1: {
-                Customer customer = new Customer(Input.string("Mata in förnamn: "), Input.string("Mata in efternamn: "), Input.string("Mata in E-post adress: "), Input.number("Mata in personnummer: "));
+                Customer customer = createCustomer();
                 UniqueRandomNr uniqueRandomNr = new UniqueRandomNr();
                 Account account = new Account(uniqueRandomNr.randomNumber(), 0, 0, customer.getSocialSecurityNumber());
                 fm.write("Javabank/Account/" + new Date().getTime() + ".txt", account.getList());
@@ -89,6 +89,7 @@ public class JavaBank {
                 break;
             }
             case 7: {
+
                 searchNames();
                 break;
             }
@@ -97,6 +98,39 @@ public class JavaBank {
                 selection();
             }
         }
+    }
+
+    public Customer createCustomer() {
+        String firstName;
+        do {
+            firstName = Input.string("Mata in förnamn: ");
+        } while (!validateName(firstName));
+
+        String lastName;
+        do {
+            lastName = Input.string("Mata in efternamn: ");
+        } while (!validateName(lastName));
+
+        String email;
+        do {
+            email = Input.string("Mata in E-post adress: ");
+        } while (!validateEmail(email));
+
+        int ssn;
+        do {
+            ssn = Input.number("Mata in personnummer: ");
+        } while (String.valueOf(ssn).length() != 10 && String.valueOf(ssn).length() != 12);
+
+        return new Customer(firstName, lastName, email, ssn);
+    }
+
+    private boolean validateEmail(String email) {
+        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$"; // Magi
+        return email.matches(regex);
+    }
+
+    private boolean validateName(String name) {
+        return name.matches("[A-Ö][a-ö]*"); // Förstår ungefär
     }
 
     public void editCustomerFile() {
