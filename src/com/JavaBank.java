@@ -57,6 +57,14 @@ public class JavaBank {
         System.out.println("0. Tillbaka\n");
     }
 
+    private void printEditOptions() {
+        System.out.println("----------------------------------------");
+        System.out.println("1. Redigera förnamn");
+        System.out.println("2. Redigera efternamn"); // return list of accounts.
+        System.out.println("3. Redigera email");
+        System.out.println("0. Tillbaka\n");
+    }
+
     private void mainSelection() {
         switch (input) {
             case 0:
@@ -91,6 +99,7 @@ public class JavaBank {
             default:
                 System.out.println("#invalid input#");
                 input = Input.number("Mata in val: ");
+                mainSelection();
                 break;
         }
     }
@@ -104,18 +113,67 @@ public class JavaBank {
                 break;
             case 1:
                 // Search customer by name.
+                printCustomerOptions();
+                input = Input.number("Mata in val: ");
+                customerOptionsSelection();
                 break;
             case 2:
                 // Search customer by ssn.
                 break;
             default:
-
+                System.out.println("#invalid input#");
+                input = Input.number("Mata in val: ");
+                searchSelection();
                 break;
         }
     }
 
     private void customerOptionsSelection() {
+        switch (input) {
+            case 0:
+                printSearchMenu();
+                input = Input.number("Mata in val: ");
+                searchSelection();
+                break;
+            case 1:
+                // new menu -> edit what? (customer file)
+                printEditOptions();
+                input = Input.number("Mata in val: ");
+                editOptionsSelection();
+                break;
+            case 2:
+                // list accounts
+                break;
+            default:
+                System.out.println("#invalid input#");
+                input = Input.number("Mata in val: ");
+                customerOptionsSelection();
+                break;
+        }
+    }
 
+    private void editOptionsSelection() {
+        switch (input) {
+            case 0:
+                printCustomerOptions();
+                input = Input.number("Mata in val: ");
+                customerOptionsSelection();
+                break;
+            case 1:
+                // edit first name
+                break;
+            case 2:
+                //  edit last name
+                break;
+            case 3:
+                // edit email
+                break;
+            default:
+                System.out.println("#invalid input#");
+                input = Input.number("Mata in val: ");
+                editOptionsSelection();
+                break;
+        }
     }
 
     public Customer createCustomer() {
