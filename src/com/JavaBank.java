@@ -22,6 +22,7 @@ public class JavaBank {
     private void buildDirectories() {
         try {
             Files.createDirectory(Paths.get("Javabank"));
+            Files.createDirectory(Paths.get("Javabank/Staffmembers.txt"));
             Files.createDirectory(Paths.get("Javabank/Customer"));
             Files.createDirectory(Paths.get("Javabank/Account"));
         } catch (IOException e) {
