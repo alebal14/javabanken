@@ -15,7 +15,8 @@ public class JavaBank {
     private int input;
     private UniqueRandomNr urn = new UniqueRandomNr();
 
-    JavaBank() throws IOException {
+
+    JavaBank() {
         fm = new FileManager();
         buildDirectories();
         printMainMenu();
@@ -76,7 +77,7 @@ public class JavaBank {
         System.out.println("0. Tillbaka\n");
     }
 
-    private void mainSelection() throws IOException {
+    private void mainSelection() {
         switch (input) {
             case 0:
                 break;
@@ -92,7 +93,8 @@ public class JavaBank {
                 Account account = new Account(urn.randomNumber(), 0, 0, customer.getSocialSecurityNumber());
                 fm.write("Javabank/Account/" + new Date().getTime() + ".txt", account.getList());
 
-                System.out.println("Skapade kund > " + customer.getFirstName() + " " + customer.getLastName() + "\nmed konto: " + account.getAccountNumber());
+                System.out.println("\nSkapade kund: " + customer.getFirstName() + " " + customer.getLastName() + "\nKonto: " + account.getAccountNumber());
+
 
                 printMainMenu();
                 input = Input.number("Mata in val: ");
@@ -130,7 +132,8 @@ public class JavaBank {
         }
     }
 
-    private void searchSelection() throws IOException {
+
+    private void searchSelection() {
         switch (input) {
             case 0:
                 printMainMenu();
@@ -154,7 +157,7 @@ public class JavaBank {
         }
     }
 
-    private void customerOptionsSelection() throws IOException {
+    private void customerOptionsSelection() {
         switch (input) {
             case 0:
                 printSearchMenu();
@@ -181,7 +184,8 @@ public class JavaBank {
         }
     }
 
-    private void customerEditOptionsSelection() throws IOException {
+
+    private void customerEditOptionsSelection() {
         switch (input) {
             case 0:
                 printCustomerOptions();
@@ -211,6 +215,12 @@ public class JavaBank {
                 printCustomerEditOptions();
                 input = Input.number("Mata in val: ");
                 accountOptionsSelection();
+                break;
+            case 1:
+                // Redigera saldo
+                break;
+            case 2:
+                // Redigera skuld
                 break;
         }
     }
@@ -368,7 +378,8 @@ public class JavaBank {
     }
 
 
-    public void showStaffmembers() throws IOException {
+
+    public void showStaffmembers() {
         BufferedReader reader;
         try {
             reader = new BufferedReader(new FileReader(
@@ -384,4 +395,8 @@ public class JavaBank {
             e.printStackTrace();
         }
     }
+
 }
+
+
+
