@@ -1,5 +1,7 @@
 package com;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -43,6 +45,7 @@ public class JavaBank {
         System.out.println("3. Personal");
         System.out.println("0. Avsluta\n");
     }
+
     private void printSearchMenu() {
         System.out.println("----------------------------------------");
         System.out.println("1. Sök namn"); // return list of customers.
@@ -83,19 +86,23 @@ public class JavaBank {
                 break;
             case 2:
                 Customer customer = createCustomer();
-                fm.write("Javabank/Customer/"+ UUID.randomUUID()+"-"+customer.getFirstName()+"_"+customer.getLastName()+".txt", customer.getList());
+                fm.write("Javabank/Customer/" + UUID.randomUUID() + "-" + customer.getFirstName() + "_" + customer.getLastName() + ".txt", customer.getList());
 
                 Account account = new Account(urn.randomNumber(), 0, 0, customer.getSocialSecurityNumber());
-                fm.write("Javabank/Account/"+new Date().getTime()+".txt", account.getList());
+                fm.write("Javabank/Account/" + new Date().getTime() + ".txt", account.getList());
 
-                System.out.println("Skapade kund > "+customer.getFirstName()+" "+customer.getLastName()+"\nmed konto: "+account.getAccountNumber());
+                System.out.println("\nSkapade kund: " + customer.getFirstName() + " " + customer.getLastName() + "\nKonto: " + account.getAccountNumber());
 
                 printMainMenu();
                 input = Input.number("Mata in val: ");
                 mainSelection();
                 break;
             case 3:
-                // Print personell register.
+                // Print personal register.
+                showStaffmembers();
+                printMainMenu();
+                input = Input.number("Mata in val: ");
+                mainSelection();
                 break;
             default:
                 System.out.println("#invalid input#");
@@ -181,11 +188,17 @@ public class JavaBank {
     }
 
     private void accountOptionsSelection() {
-        switch(input) {
+        switch (input) {
             case 0:
                 printCustomerEditOptions();
                 input = Input.number("Mata in val: ");
                 accountOptionsSelection();
+                break;
+            case 1:
+                // Redigera saldo
+                break;
+            case 2:
+                // Redigera skuld
                 break;
         }
     }
@@ -224,62 +237,105 @@ public class JavaBank {
     }
 
     public void editCustomerFile() {
-        List<String> searchword = fm.find(Input.string("Mata in ett sökord: "));
+        int num = Input.number("Mata in personnummer : ");
+        String searchNumber = String.valueOf(num);
+
+        List<String> searchForSSN = fm.find(searchNumber);
         String fileDir = "";
         String ssn = "";
-        for (String path : searchword) {
+        String accNum = "";
+        for (String path : searchForSSN) {
             fileDir = path;
             for (String line : fm.read(path)) {
                 System.out.println(line);
-                if (line.contains("ssn")) {
+                if (line.contains("ssn") || line.contains("accNum")) {
                     ssn = line.substring(4);
+                    accNum = line.substring(13);
                 }
             }
         }
 
-        if(fm.read(fileDir).isEmpty()) {
+        if (fm.read(fileDir).isEmpty()) {
             System.out.println("Invalid search word!");
             return;
         }
 
-        System.out.println();
-        System.out.println("Mata in ny information");
-
-        Customer customer = new Customer(
-                Input.string("Mata in förnamn: "),
-                Input.string("Mata in efternamn: "),
-                Input.string("Mata in E-post adress: "),
-                Integer.valueOf(ssn)
-        );
-        fm.write(fileDir, customer.getList());
-        System.out.println("Din information har nu uppdaterats");
-    }
-
-        public void searchSSN () {
-            int num = Input.number("Mata in ett personnummer : ");
-            String searchnumber = String.valueOf(num);
-
-            List<String> searchNumbermethod = fm.find(searchnumber);
-            for(String path:searchNumbermethod) {
-                for(String line:fm.read(path)) {
-                    System.out.println(line);
-                }
-                System.out.println();
+        System.out.println("--------------------------");
+        System.out.println("Select 1 to edit account file");
+        System.out.println("Select 2 to edit customer file");
+        int selection = Input.number("Mata in val: ");
+        switch (selection) {
+            case 0:
+                break;
+            case 1: {
+                System.out.println("Mata in ny information");
+                Account account = new Account(
+                        Integer.valueOf(accNum),
+                        Input.number("Mata in account balanace: "),
+                        Input.number("Mata in debt: "),
+                        Integer.valueOf(ssn)
+                );
+                fm.write(fileDir, account.getList());
+                System.out.println("Din information har nu uppdaterats");
+                break;
             }
-        }
-
-        public void searchNames () {
-            List<String> searchword = fm.find(Input.string("Mata in ett sökord: "));
-            for (String path : searchword) {
-                for (String line : fm.read(path)) {
-                    System.out.println(line);
-                }
-                System.out.println();
+            case 2: {
+                System.out.println("Mata in ny information");
+                Customer customer = new Customer(
+                        Input.string("Mata in förnamn: "),
+                        Input.string("Mata in efternamn: "),
+                        Input.string("Mata in E-post adress: "),
+                        Integer.valueOf(ssn)
+                );
+                fm.write(fileDir, customer.getList());
+                System.out.println("Din information har nu uppdaterats");
+                break;
             }
         }
 
     }
 
+    public void searchSSN() {
+        int num = Input.number("Mata in ett personnummer : ");
+        String searchnumber = String.valueOf(num);
+
+        List<String> searchNumbermethod = fm.find(searchnumber);
+        for (String path : searchNumbermethod) {
+            for (String line : fm.read(path)) {
+                System.out.println(line);
+            }
+            System.out.println();
+        }
+    }
+
+    public void searchNames() {
+        List<String> searchword = fm.find(Input.string("Mata in ett sökord: "));
+        for (String path : searchword) {
+            for (String line : fm.read(path)) {
+                System.out.println(line);
+            }
+            System.out.println();
+        }
+    }
+
+
+    public void showStaffmembers() {
+        BufferedReader reader;
+        try {
+            reader = new BufferedReader(new FileReader(
+                    "Javabank/Staffmembers/Staffmembers.txt"));
+            String line = reader.readLine();
+            while (line != null) {
+                System.out.println(line);
+                // read next line
+                line = reader.readLine();
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
 
 
 
