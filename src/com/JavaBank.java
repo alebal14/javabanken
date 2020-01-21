@@ -16,9 +16,19 @@ public class JavaBank {
     private FileManager fm;
     private int input;
     private UniqueRandomNr urn = new UniqueRandomNr();
-    private enum FileTypes {
-        CUSTOMER,
-        ACCOUNT
+
+    private int searchIndex = 0;
+    private List<Path> customerSearchResults = new ArrayList<>();
+
+    private enum FileProperty {
+        FIRSTNAME,
+        LASTNAME,
+        EMAIL,
+        SSN
+    }
+    private enum SearchBy {
+        NAME,
+        SSN
     }
 
     JavaBank() {
@@ -33,12 +43,12 @@ public class JavaBank {
 
     private void buildDirectories() {
         try {
-            Files.createDirectory(Paths.get("Javabank"));
-            Files.createDirectory(Paths.get("Javabank/Customer"));
-            Files.createDirectory(Paths.get("Javabank/Account"));
-            Files.createDirectory(Paths.get("Javabank/Personell"));
+            if(!Files.exists(Paths.get("Javabank")))Files.createDirectory(Paths.get("Javabank"));
+            if(!Files.exists(Paths.get("Javabank/Customer")))Files.createDirectory(Paths.get("Javabank/Customer"));
+            if(!Files.exists(Paths.get("Javabank/Account")))Files.createDirectory(Paths.get("Javabank/Account"));
+            if(!Files.exists(Paths.get("Javabank/Staffmembers")))Files.createDirectory(Paths.get("Javabank/Staffmembers"));
         } catch (IOException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
@@ -49,7 +59,6 @@ public class JavaBank {
         System.out.println("1. Sök kund");
         System.out.println("2. Skapa kund");
         System.out.println("3. Personal");
-        System.out.println("4. Testa Sökmetod");
         System.out.println("0. Avsluta\n");
     }
 
@@ -98,7 +107,7 @@ public class JavaBank {
                 Account account = new Account(urn.randomNumber(), 0, 0, customer.getSocialSecurityNumber());
                 fm.write("Javabank/Account/" + new Date().getTime() + ".txt", account.getList());
 
-                System.out.println("Skapade kund > " + customer.getFirstName() + " " + customer.getLastName() + "\nmed konto: " + account.getAccountNumber());
+                System.out.println("\nSkapade kund > " + customer.getFirstName() + " " + customer.getLastName() + "\nKonto: " + account.getAccountNumber()+"\n");
 
                 printMainMenu();
                 input = Input.number("Mata in val: ");
@@ -110,9 +119,6 @@ public class JavaBank {
                 printMainMenu();
                 input = Input.number("Mata in val: ");
                 mainSelection();
-                break;
-            case 4:
-                //fm.find("Javabank/Customer", "G");
                 break;
             default:
                 System.out.println("#invalid input#");
@@ -130,14 +136,22 @@ public class JavaBank {
                 mainSelection();
                 break;
             case 1:
-                // Search customer by name.
-                //fm.find("Javabanken/Customer/")
-                printCustomerOptions();
+                customerSearchResults = searchFiles(Input.string("Mata in söktext: "), fm.listFiles("Javabank/Customer"), SearchBy.NAME);
+                System.out.println("----------------------------------------");
+                for(Path p:customerSearchResults) {
+                    System.out.println(++searchIndex+". "+p);
+                }
+                System.out.println("0. Tillbaka\n");
                 input = Input.number("Mata in val: ");
-                customerOptionsSelection();
                 break;
             case 2:
-                // Search customer by ssn.
+                customerSearchResults = searchFiles(Input.string("Mata in söktext: "), fm.listFiles("Javabank/Customer"), SearchBy.SSN);
+                System.out.println("----------------------------------------");
+                for(Path p:customerSearchResults) {
+                    System.out.println(++searchIndex+". "+p);
+                }
+                System.out.println("0. Tillbaka\n");
+                input = Input.number("Mata in val: ");
                 break;
             default:
                 System.out.println("#invalid input#");
@@ -342,8 +356,28 @@ public class JavaBank {
         }
     }
 
-    private void search(String searchTerm, List<Path> path, Object fileType) {
+    private List<Path> searchFiles(String searchTerm, List<Path> filesList, Object searchingFor) {
+        List<Path> returnPaths = new ArrayList<>();
 
+        Customer customerFile;
+        List<String> customerProperties;
+        for(Path filePath:filesList) {
+            customerProperties = new ArrayList<>();
+            for(String line:fm.readData(filePath.toString())) {
+                customerProperties.add(line.split(":")[1]);
+            }
+            customerFile = new Customer(customerProperties.get(0), customerProperties.get(1), customerProperties.get(2), Integer.parseInt(customerProperties.get(3)));
+            if(searchingFor == SearchBy.NAME) {
+                if(customerFile.getFirstName().toLowerCase().contains(searchTerm.toLowerCase()) || customerFile.getLastName().toLowerCase().contains(searchTerm.toLowerCase())) {
+                    returnPaths.add(filePath);
+                }
+            } else if(searchingFor == SearchBy.SSN) {
+                if(String.valueOf(customerFile.getSocialSecurityNumber()).toLowerCase().contains(searchTerm.toLowerCase())) {
+                    returnPaths.add(filePath);
+                }
+            }
+        }
+        return returnPaths;
     }
 }
 

@@ -32,7 +32,7 @@ public class FileManager {
         }
     }
 
-    public List<String> read(String filePath) {
+    public List<String> readData(String filePath) {
         Path path = Paths.get(filePath);
         List<String> fileData = new ArrayList<>();
         try {
@@ -55,7 +55,7 @@ public class FileManager {
         }
     }
 
-    public List<Path> list(String folderPath) {
+    public List<Path> listFiles(String folderPath) {
         List<Path> filesList = new ArrayList<>();
         try {
             for(Path p:Files.list(Paths.get(folderPath)).collect(Collectors.toList())) {
