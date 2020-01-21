@@ -5,9 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class JavaBank {
 
@@ -45,6 +43,7 @@ public class JavaBank {
         System.out.println("2. Skapa kund");
         System.out.println("3. Redigera");
         System.out.println("4. Skriv ut Personallista");
+        System.out.println("5. Skapa account för customer");
         System.out.println("0. Avsluta\n");
     }
 
@@ -123,6 +122,11 @@ public class JavaBank {
                 printMainMenu();
                 input = Input.number("Mata in val: ");
                 mainSelection();
+                break;
+            case 5:
+                int number = Input.number("Mata in personnummer: ");
+                Account accountForCust = new Account(urn.randomNumber(), 0, 0, number);
+                fm.write("Javabank/Account/" + new Date().getTime() + ".txt", accountForCust.getList());
                 break;
             default:
                 System.out.println("#invalid input#");
@@ -296,7 +300,11 @@ public class JavaBank {
                 System.out.println("Din information har nu uppdaterats");
                 break;
             case 2:
-                deleteFiles(fileDir);
+                List<String> deleteAccount = fm.findFile(searchNumber, "account");
+                System.out.println(deleteAccount);
+                deleteFiles(searchNumber);
+                System.out.println("Du har tagit bort fil");
+                System.out.println("-------------------------------------------");
                 break;
         }
 
@@ -309,14 +317,12 @@ public class JavaBank {
         List<String> searchForSSN = fm.findFile(searchNumber, "account");
         String fileDir = "";
         String ssn = "";
-        String accNum = "";
         for (String path : searchForSSN) {
             fileDir = path;
             for (String line : fm.read(path)) {
                 System.out.println(line);
                 if (line.contains("ssn") || line.contains("accNum")) {
                     ssn = line.substring(4);
-                    accNum = line.substring(13);
                 }
             }
         }
@@ -328,30 +334,58 @@ public class JavaBank {
 
         System.out.println("-------------------------------------------");
         System.out.println("Du har " + searchForSSN.size() + " konton");
-        System.out.println("Välj 1 för att fortsätta redigera fil");
-        System.out.println("Välj 2 för att ta bort fil");
+        int amount = 1;
+        for(String path : searchForSSN){
+            for(String printAllAccounts : fm.read(path)){
+                if (printAllAccounts.contains("accountnumber")) {
+                    System.out.println("Konto " + amount + ": " + printAllAccounts);
+                    amount++;
+                }
+            }
+        }
+        System.out.println("-------------------------------------------");
+        System.out.println("Välj 1 för att fortsätta redigera ett konto");
+        System.out.println("Välj 2 för att ta bort ett konto");
 
         int choice = Input.number("Mata in val: ");
         switch (choice) {
             case 1:
+                int accNumber = Input.number("Mata in account number: ");
+                String newFileDir = getAccFileDir(Integer.toString(accNumber));
                 System.out.println("Mata in ny information");
                 Account account = new Account(
-                        Integer.valueOf(accNum),
-                        Input.number("Mata in account balanace: "),
+                        accNumber,
+                        Input.number("Mata in account balance: "),
                         Input.number("Mata in debt: "),
                         Integer.valueOf(ssn)
                 );
-                fm.write(fileDir, account.getList());
+                fm.write(newFileDir, account.getList());
                 System.out.println("Din information har nu uppdaterats");
                 break;
             case 2:
-                deleteFiles(fileDir);
+                int accNumb = Input.number("Mata in account number: ");
+                String newFileDirr = getAccFileDir(Integer.toString(accNumb));
+                fm.delete(newFileDirr);
+                System.out.println("Du har tagit bort konto");
                 break;
         }
     }
 
-    public void deleteFiles(String fileDir) {
-        fm.delete(fileDir);
+    public void deleteFiles(String ssn) {
+        List<String> files = fm.find(ssn);
+        for(String path : files) {
+            fm.delete(path);
+        }
+    }
+
+    public String getAccFileDir(String searchAccNum){
+        List<String> getAccNum = fm.findFile(searchAccNum, "account");
+        String fileDir = "";
+        for (String path : getAccNum) {
+            fileDir = path;
+        }
+
+        return fileDir;
     }
 
     public void searchSSN() {
