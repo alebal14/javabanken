@@ -40,7 +40,6 @@ public class JavaBank {
         System.out.println("1. Sök kund");
         System.out.println("2. Skapa kund");
         System.out.println("3. Personal");
-        System.out.println("666. Redigera kund");
         System.out.println("0. Avsluta\n");
     }
     private void printSearchMenu() {
@@ -89,12 +88,6 @@ public class JavaBank {
                 break;
             case 3:
                 // Print personell register.
-                break;
-            case 666:
-                editCustomerFile();
-                printMainMenu();
-                input = Input.number("Mata in val: ");
-                mainSelection();
                 break;
             default:
                 System.out.println("#invalid input#");
