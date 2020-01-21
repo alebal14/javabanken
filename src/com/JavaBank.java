@@ -59,6 +59,13 @@ public class JavaBank {
         System.out.println("----------------------------------------");
         System.out.println("1. Redigera personlig information");
         System.out.println("2. Redigera konto information"); // return list of accounts.
+        System.out.println("3. Gör en överföring");
+        System.out.println("0. Tillbaka\n");
+    }
+
+    private void printTransactionsOptions(){
+        System.out.println("----------------------------------------");
+        System.out.println("1. Ange Personnummer till kunden du vill överföra till");
         System.out.println("0. Tillbaka\n");
     }
 
@@ -175,6 +182,11 @@ public class JavaBank {
                 input = Input.number("Mata in val: ");
                 accountOptionsSelection();
                 break;
+            case 3:
+                printTransactionsOptions();
+                input = Input.number("Mata in val: ");
+                transactionsOptionsSelection();
+                break;
             default:
                 System.out.println("#invalid input#");
                 input = Input.number("Mata in val: ");
@@ -220,6 +232,20 @@ public class JavaBank {
                 break;
             case 2:
                 // Redigera skuld
+                break;
+        }
+    }
+
+    private void transactionsOptionsSelection() {
+        switch (input) {
+            case 0:
+                printCustomerEditOptions();
+                input = Input.number("Mata in val: ");
+                accountOptionsSelection();
+                break;
+            case 1:
+                // Överföring
+                searchSSN();
                 break;
         }
     }
