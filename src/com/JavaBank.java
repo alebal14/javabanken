@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -14,8 +16,12 @@ public class JavaBank {
     private FileManager fm;
     private int input;
     private UniqueRandomNr urn = new UniqueRandomNr();
+    private enum FileTypes {
+        CUSTOMER,
+        ACCOUNT
+    }
 
-    JavaBank() throws IOException {
+    JavaBank() {
         fm = new FileManager();
         buildDirectories();
         printMainMenu();
@@ -43,6 +49,7 @@ public class JavaBank {
         System.out.println("1. Sök kund");
         System.out.println("2. Skapa kund");
         System.out.println("3. Personal");
+        System.out.println("4. Testa Sökmetod");
         System.out.println("0. Avsluta\n");
     }
 
@@ -75,7 +82,7 @@ public class JavaBank {
         System.out.println("0. Tillbaka\n");
     }
 
-    private void mainSelection() throws IOException {
+    private void mainSelection() {
         switch (input) {
             case 0:
                 break;
@@ -104,6 +111,9 @@ public class JavaBank {
                 input = Input.number("Mata in val: ");
                 mainSelection();
                 break;
+            case 4:
+                //fm.find("Javabank/Customer", "G");
+                break;
             default:
                 System.out.println("#invalid input#");
                 input = Input.number("Mata in val: ");
@@ -112,7 +122,7 @@ public class JavaBank {
         }
     }
 
-    private void searchSelection() throws IOException {
+    private void searchSelection() {
         switch (input) {
             case 0:
                 printMainMenu();
@@ -121,6 +131,7 @@ public class JavaBank {
                 break;
             case 1:
                 // Search customer by name.
+                //fm.find("Javabanken/Customer/")
                 printCustomerOptions();
                 input = Input.number("Mata in val: ");
                 customerOptionsSelection();
@@ -136,7 +147,7 @@ public class JavaBank {
         }
     }
 
-    private void customerOptionsSelection() throws IOException {
+    private void customerOptionsSelection() {
         switch (input) {
             case 0:
                 printSearchMenu();
@@ -163,7 +174,7 @@ public class JavaBank {
         }
     }
 
-    private void customerEditOptionsSelection() throws IOException {
+    private void customerEditOptionsSelection() {
         switch (input) {
             case 0:
                 printCustomerOptions();
@@ -229,7 +240,7 @@ public class JavaBank {
     private boolean validateName(String name) {
         return name.matches("[A-Ö][a-ö]*"); // Förstår ungefär
     }
-
+/*
     public void editCustomerFile() {
         int num = Input.number("Mata in personnummer : ");
         String searchNumber = String.valueOf(num);
@@ -312,8 +323,9 @@ public class JavaBank {
         }
     }
 
+ */
 
-    public void showStaffmembers() throws IOException {
+    private void showStaffmembers() {
         BufferedReader reader;
         try {
             reader = new BufferedReader(new FileReader(
@@ -328,6 +340,10 @@ public class JavaBank {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void search(String searchTerm, List<Path> path, Object fileType) {
+
     }
 }
 
