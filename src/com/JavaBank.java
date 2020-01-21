@@ -203,15 +203,20 @@ public class JavaBank {
     }
 
     public void editCustomerFile() {
-        List<String> searchword = fm.find(Input.string("Mata in ett sökord: "));
+        int num = Input.number("Mata in personnummer : ");
+        String searchNumber = String.valueOf(num);
+
+        List<String> searchForSSN = fm.find(searchNumber);
         String fileDir = "";
         String ssn = "";
-        for (String path : searchword) {
+        String accNum = "";
+        for (String path : searchForSSN) {
             fileDir = path;
             for (String line : fm.read(path)) {
                 System.out.println(line);
-                if (line.contains("ssn")) {
+                if (line.contains("ssn") || line.contains("accNum")) {
                     ssn = line.substring(4);
+                    accNum = line.substring(13);
                 }
             }
         }
@@ -221,17 +226,39 @@ public class JavaBank {
             return;
         }
 
-        System.out.println();
-        System.out.println("Mata in ny information");
+        System.out.println("--------------------------");
+        System.out.println("Select 1 to edit account file");
+        System.out.println("Select 2 to edit customer file");
+        int selection = Input.number("Mata in val: ");
+        switch (selection) {
+            case 0:
+            break;
+            case 1: {
+                System.out.println("Mata in ny information");
+                Account account = new Account(
+                        Integer.valueOf(accNum),
+                        Input.number("Mata in account balanace: "),
+                        Input.number("Mata in debt: "),
+                        Integer.valueOf(ssn)
+                );
+                fm.write(fileDir, account.getList());
+                System.out.println("Din information har nu uppdaterats");
+                break;
+            }
+            case 2: {
+                System.out.println("Mata in ny information");
+                Customer customer = new Customer(
+                        Input.string("Mata in förnamn: "),
+                        Input.string("Mata in efternamn: "),
+                        Input.string("Mata in E-post adress: "),
+                        Integer.valueOf(ssn)
+                );
+                fm.write(fileDir, customer.getList());
+                System.out.println("Din information har nu uppdaterats");
+                break;
+            }
+        }
 
-        Customer customer = new Customer(
-                Input.string("Mata in förnamn: "),
-                Input.string("Mata in efternamn: "),
-                Input.string("Mata in E-post adress: "),
-                Integer.valueOf(ssn)
-        );
-        fm.write(fileDir, customer.getList());
-        System.out.println("Din information har nu uppdaterats");
     }
 
         public void searchSSN () {
