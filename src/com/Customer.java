@@ -50,7 +50,7 @@ public class Customer {
 
     public List<String> getList() {
         List<String> detailsList = new ArrayList<>();
-        for(String key:details.keySet()) {
+        for(String key : details.keySet()) {
             detailsList.add(key+":"+details.get(key));
         }
         return detailsList;
