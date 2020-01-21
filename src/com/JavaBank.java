@@ -43,7 +43,7 @@ public class JavaBank {
         System.out.println("1. Sök kund");
         System.out.println("2. Skapa kund");
         System.out.println("3. Redigera");
-        System.out.println("4. Skriv ut personal lista");
+        System.out.println("4. Skriv ut Personallista");
         System.out.println("0. Avsluta\n");
     }
 
@@ -98,7 +98,7 @@ public class JavaBank {
                 input = Input.number("Mata in val: ");
                 mainSelection();
                 break;
-            case 3: {
+            case 3:
                 System.out.println("----------------------------------");
                 System.out.println("Select 1 to search for customer");
                 System.out.println("Select 2 to search for accounts");
@@ -114,7 +114,7 @@ public class JavaBank {
                 printMainMenu();
                 input = Input.number("Mata in val: ");
                 mainSelection();
-                break;    
+                break;
             case 4:
                 // Print personal register.
                 showStaffmembers();
@@ -385,6 +385,3 @@ public class JavaBank {
         }
     }
 }
-
-
-
