@@ -42,7 +42,8 @@ public class JavaBank {
         System.out.println("----------------------------------------");
         System.out.println("1. Sök kund");
         System.out.println("2. Skapa kund");
-        System.out.println("3. Personal");
+        System.out.println("3. Redigera");
+        System.out.println("4. Skriv ut Personallista");
         System.out.println("0. Avsluta\n");
     }
 
@@ -98,6 +99,23 @@ public class JavaBank {
                 mainSelection();
                 break;
             case 3:
+                System.out.println("----------------------------------");
+                System.out.println("Select 1 to search for customer");
+                System.out.println("Select 2 to search for accounts");
+                int choice = Input.number("Mata in val: ");
+                switch (choice) {
+                    case 1:
+                        editCustomerFile();
+                        break;
+                    case 2:
+                        editAccountFile();
+                        break;
+                }
+                printMainMenu();
+                input = Input.number("Mata in val: ");
+                mainSelection();
+                break;
+            case 4:
                 // Print personal register.
                 showStaffmembers();
                 printMainMenu();
@@ -234,7 +252,51 @@ public class JavaBank {
         int num = Input.number("Mata in personnummer : ");
         String searchNumber = String.valueOf(num);
 
-        List<String> searchForSSN = fm.find(searchNumber);
+        List<String> searchForSSN = fm.findFile(searchNumber, "customer");
+        String fileDir = "";
+        String ssn = "";
+        for (String path : searchForSSN) {
+            fileDir = path;
+            for (String line : fm.read(path)) {
+                System.out.println(line);
+                if (line.contains("ssn")) {
+                    ssn = line.substring(4);
+                }
+            }
+        }
+
+        if(fm.read(fileDir).isEmpty()) {
+            System.out.println("Invalid search word!");
+            return;
+        }
+        System.out.println("-------------------------------------------");
+        System.out.println("Välj 1 för att fortsätta redigera fil");
+        System.out.println("Välj 2 för att ta bort fil");
+        int choice = Input.number("Mata in val: ");
+        switch (choice) {
+            case 1:
+                System.out.println("Mata in ny information");
+                Customer customer = new Customer(
+                        Input.string("Mata in förnamn: "),
+                        Input.string("Mata in efternamn: "),
+                        Input.string("Mata in E-post adress: "),
+                        Integer.valueOf(ssn)
+                );
+                fm.write(fileDir, customer.getList());
+                System.out.println("Din information har nu uppdaterats");
+                break;
+            case 2:
+                deleteFiles(fileDir);
+                break;
+        }
+
+    }
+
+    public void editAccountFile() {
+        int num = Input.number("Mata in personnummer : ");
+        String searchNumber = String.valueOf(num);
+
+        List<String> searchForSSN = fm.findFile(searchNumber, "account");
         String fileDir = "";
         String ssn = "";
         String accNum = "";
@@ -249,19 +311,19 @@ public class JavaBank {
             }
         }
 
-        if (fm.read(fileDir).isEmpty()) {
+        if(fm.read(fileDir).isEmpty()) {
             System.out.println("Invalid search word!");
             return;
         }
 
-        System.out.println("--------------------------");
-        System.out.println("Select 1 to edit account file");
-        System.out.println("Select 2 to edit customer file");
-        int selection = Input.number("Mata in val: ");
-        switch (selection) {
-            case 0:
-                break;
-            case 1: {
+        System.out.println("-------------------------------------------");
+        System.out.println("Du har " + searchForSSN.size() + " konton");
+        System.out.println("Välj 1 för att fortsätta redigera fil");
+        System.out.println("Välj 2 för att ta bort fil");
+
+        int choice = Input.number("Mata in val: ");
+        switch (choice) {
+            case 1:
                 System.out.println("Mata in ny information");
                 Account account = new Account(
                         Integer.valueOf(accNum),
@@ -272,21 +334,14 @@ public class JavaBank {
                 fm.write(fileDir, account.getList());
                 System.out.println("Din information har nu uppdaterats");
                 break;
-            }
-            case 2: {
-                System.out.println("Mata in ny information");
-                Customer customer = new Customer(
-                        Input.string("Mata in förnamn: "),
-                        Input.string("Mata in efternamn: "),
-                        Input.string("Mata in E-post adress: "),
-                        Integer.valueOf(ssn)
-                );
-                fm.write(fileDir, customer.getList());
-                System.out.println("Din information har nu uppdaterats");
+            case 2:
+                deleteFiles(fileDir);
                 break;
-            }
         }
+    }
 
+    public void deleteFiles(String fileDir) {
+        fm.delete(fileDir);
     }
 
     public void searchSSN() {
@@ -330,6 +385,3 @@ public class JavaBank {
         }
     }
 }
-
-
-
