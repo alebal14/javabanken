@@ -1,5 +1,7 @@
 package com;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -13,7 +15,7 @@ public class JavaBank {
     private int input;
     private UniqueRandomNr urn = new UniqueRandomNr();
 
-    JavaBank() {
+    JavaBank() throws IOException {
         fm = new FileManager();
         buildDirectories();
         printMainMenu();
@@ -43,6 +45,7 @@ public class JavaBank {
         System.out.println("3. Personal");
         System.out.println("0. Avsluta\n");
     }
+
     private void printSearchMenu() {
         System.out.println("----------------------------------------");
         System.out.println("1. Sök namn"); // return list of customers.
@@ -72,7 +75,7 @@ public class JavaBank {
         System.out.println("0. Tillbaka\n");
     }
 
-    private void mainSelection() {
+    private void mainSelection() throws IOException {
         switch (input) {
             case 0:
                 break;
@@ -83,19 +86,23 @@ public class JavaBank {
                 break;
             case 2:
                 Customer customer = createCustomer();
-                fm.write("Javabank/Customer/"+ UUID.randomUUID()+"-"+customer.getFirstName()+"_"+customer.getLastName()+".txt", customer.getList());
+                fm.write("Javabank/Customer/" + UUID.randomUUID() + "-" + customer.getFirstName() + "_" + customer.getLastName() + ".txt", customer.getList());
 
                 Account account = new Account(urn.randomNumber(), 0, 0, customer.getSocialSecurityNumber());
-                fm.write("Javabank/Account/"+new Date().getTime()+".txt", account.getList());
+                fm.write("Javabank/Account/" + new Date().getTime() + ".txt", account.getList());
 
-                System.out.println("Skapade kund > "+customer.getFirstName()+" "+customer.getLastName()+"\nmed konto: "+account.getAccountNumber());
+                System.out.println("Skapade kund > " + customer.getFirstName() + " " + customer.getLastName() + "\nmed konto: " + account.getAccountNumber());
 
                 printMainMenu();
                 input = Input.number("Mata in val: ");
                 mainSelection();
                 break;
             case 3:
-                // Print personell register.
+                // Print personal register.
+                showStaffmembers();
+                printMainMenu();
+                input = Input.number("Mata in val: ");
+                mainSelection();
                 break;
             default:
                 System.out.println("#invalid input#");
@@ -105,7 +112,7 @@ public class JavaBank {
         }
     }
 
-    private void searchSelection() {
+    private void searchSelection() throws IOException {
         switch (input) {
             case 0:
                 printMainMenu();
@@ -129,7 +136,7 @@ public class JavaBank {
         }
     }
 
-    private void customerOptionsSelection() {
+    private void customerOptionsSelection() throws IOException {
         switch (input) {
             case 0:
                 printSearchMenu();
@@ -156,7 +163,7 @@ public class JavaBank {
         }
     }
 
-    private void customerEditOptionsSelection() {
+    private void customerEditOptionsSelection() throws IOException {
         switch (input) {
             case 0:
                 printCustomerOptions();
@@ -181,7 +188,7 @@ public class JavaBank {
     }
 
     private void accountOptionsSelection() {
-        switch(input) {
+        switch (input) {
             case 0:
                 printCustomerEditOptions();
                 input = Input.number("Mata in val: ");
@@ -242,7 +249,7 @@ public class JavaBank {
             }
         }
 
-        if(fm.read(fileDir).isEmpty()) {
+        if (fm.read(fileDir).isEmpty()) {
             System.out.println("Invalid search word!");
             return;
         }
@@ -253,7 +260,7 @@ public class JavaBank {
         int selection = Input.number("Mata in val: ");
         switch (selection) {
             case 0:
-            break;
+                break;
             case 1: {
                 System.out.println("Mata in ny information");
                 Account account = new Account(
@@ -282,29 +289,17 @@ public class JavaBank {
 
     }
 
-        public void searchSSN () {
-            int num = Input.number("Mata in ett personnummer : ");
-            String searchnumber = String.valueOf(num);
+    public void searchSSN() {
+        int num = Input.number("Mata in ett personnummer : ");
+        String searchnumber = String.valueOf(num);
 
-            List<String> searchNumbermethod = fm.find(searchnumber);
-            for(String path:searchNumbermethod) {
-                for(String line:fm.read(path)) {
-                    System.out.println(line);
-                }
-                System.out.println();
+        List<String> searchNumbermethod = fm.find(searchnumber);
+        for (String path : searchNumbermethod) {
+            for (String line : fm.read(path)) {
+                System.out.println(line);
             }
+            System.out.println();
         }
-
-        public void searchNames () {
-            List<String> searchword = fm.find(Input.string("Mata in ett sökord: "));
-            for (String path : searchword) {
-                for (String line : fm.read(path)) {
-                    System.out.println(line);
-                }
-                System.out.println();
-            }
-        }
-
     }
 
     public void searchNames() {
@@ -316,6 +311,7 @@ public class JavaBank {
             System.out.println();
         }
     }
+
 
     public void showStaffmembers() throws IOException {
         BufferedReader reader;
@@ -332,7 +328,8 @@ public class JavaBank {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+    }
+}
 
 
 
