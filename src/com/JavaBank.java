@@ -147,8 +147,15 @@ public class JavaBank {
                 break;
             case 6:
                 Transaction trans = new Transaction();
-                trans.getTransaction();
-                trans.getListTransaction();
+                ArrayList <Transaction> transactions = new ArrayList<>();
+                transactions.add(trans);
+
+                System.out.println("kontonummer" + "\tdatum" + "\ttransaktionsumma"   + "\tsaldo");
+                for( Transaction t : transactions){
+                    System.out.println(t.accountNumber + "\t" + t.date.getYear() + "\t"+  t.transactionsSum + "\t"+ t.balance);
+                }
+
+
                 break;
             default:
                 System.out.println("#invalid input#");

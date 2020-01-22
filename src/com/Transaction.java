@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
+
 public class Transaction {
-    public int accountNumber;
-    public double transactionsSum;
-    public double balance;
-    public Date date;
-    
+    public int accountNumber = 1111111111;
+    public double transactionsSum = 200.00;
+    public double balance = 700;
+    public Date date = new Date(2020,10, 01);
+
+
     public int getAccountNumber() {
         return accountNumber;
     }
@@ -44,12 +47,13 @@ public class Transaction {
         this.date = date;
     }
 
-    List <Integer> transaction = new ArrayList<Integer>();
+    public List <Integer> transaction = new ArrayList<Integer>();
+
+
 
     public void getTransaction() {
         double t = getBalance((int)23.00);
-        transaction.add((int) t);
-        transaction.add(1234500);
+
         transaction.add(1234500);
         transaction.add(1234500);
     }
