@@ -173,7 +173,7 @@ public class JavaBank {
 
                 break;
             case 2:
-                customerSearchResults = searchFiles(Input.string("Mata in söktext: "), fm.listFiles("Javabank/Customer"), SearchBy.SSN);
+                customerSearchResults = searchFiles(Input.string("Mata in siffror: "), fm.listFiles("Javabank/Customer"), SearchBy.SSN);
                 System.out.println("----------------------------------------");
 
                 for(Path p:customerSearchResults) {
