@@ -11,14 +11,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+
 public class JavaBank {
 
     private FileManager fm;
     private int input;
     private UniqueRandomNr urn = new UniqueRandomNr();
-
     private int searchIndex = 0;
     private List<Path> customerSearchResults = new ArrayList<>();
+ 
     private List<Path> accountSearchResults = new ArrayList<>();
     private Customer selectedCustomer;
     private Account selectedAccountOne;
@@ -30,10 +31,12 @@ public class JavaBank {
         EMAIL,
         SSN
     }
+
     private enum SearchBy {
         NAME,
         SSN
     }
+
 
     JavaBank() {
         fm = new FileManager();
@@ -51,6 +54,7 @@ public class JavaBank {
             if(!Files.exists(Paths.get("Javabank/Customer")))Files.createDirectory(Paths.get("Javabank/Customer"));
             if(!Files.exists(Paths.get("Javabank/Account")))Files.createDirectory(Paths.get("Javabank/Account"));
             if(!Files.exists(Paths.get("Javabank/Staffmembers")))Files.createDirectory(Paths.get("Javabank/Staffmembers"));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -112,11 +116,29 @@ public class JavaBank {
                 Account account = createAccount(customer, 0 ,0);
                 System.out.println("\nSkapade kund > " + customer.getFirstName() + " " + customer.getLastName() + "\nKonto: " + account.getAccountNumber()+"\n");
 
+
                 printMainMenu();
                 input = Input.number("Mata in val: ");
                 mainSelection();
                 break;
             case 3:
+                System.out.println("----------------------------------");
+                System.out.println("Select 1 to search for customer");
+                System.out.println("Select 2 to search for accounts");
+                int choice = Input.number("Mata in val: ");
+                switch (choice) {
+                    case 1:
+                        //editCustomerFile();
+                        break;
+                    case 2:
+                        //editAccountFile();
+                        break;
+                }
+                printMainMenu();
+                input = Input.number("Mata in val: ");
+                mainSelection();
+                break;
+            case 4:
                 // Print personal register.
                 showStaffmembers();
                 printMainMenu();
@@ -148,10 +170,12 @@ public class JavaBank {
                 input = Input.number("Mata in val: ");
                 validateInput(customerSearchResults.size());
                 selectCustomer();
+
                 break;
             case 2:
                 customerSearchResults = searchFiles(Input.string("Mata in söktext: "), fm.listFiles("Javabank/Customer"), SearchBy.SSN);
                 System.out.println("----------------------------------------");
+
                 for(Path p:customerSearchResults) {
                     System.out.println(++searchIndex+". "+p);
                 }
@@ -159,6 +183,7 @@ public class JavaBank {
                 input = Input.number("Mata in val: ");
                 validateInput(customerSearchResults.size());
                 selectCustomer();
+
                 break;
             default:
                 System.out.println("#invalid input#");
@@ -443,6 +468,7 @@ public class JavaBank {
 
  */
 
+
     private void showStaffmembers() {
         BufferedReader reader;
         try {
@@ -465,6 +491,7 @@ public class JavaBank {
 
         Customer customerFile;
         List<String> customerProperties;
+
         for(Path filePath:filesList) {
             customerProperties = new ArrayList<>();
             for(String line:fm.readData(filePath.toString())) {
@@ -477,6 +504,7 @@ public class JavaBank {
                 }
             } else if(searchingFor == SearchBy.SSN) {
                 if(String.valueOf(customerFile.getSocialSecurityNumber()).toLowerCase().contains(searchTerm.toLowerCase())) {
+
                     returnPaths.add(filePath);
                 }
             }
@@ -484,6 +512,7 @@ public class JavaBank {
         return returnPaths;
     }
 }
+
 
 
 
