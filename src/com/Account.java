@@ -2,11 +2,12 @@ package com;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class Account {
 
-    private HashMap<String, String> details = new HashMap<>();
+    private LinkedHashMap<String, String> details = new LinkedHashMap<>();
 
     public Account(int accountNumber, double accountBalance, double debt, int ssn) {
         this.details.put("accountnumber", String.valueOf(accountNumber));

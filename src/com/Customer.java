@@ -2,10 +2,11 @@ package com;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class Customer {
-    private HashMap<String, String> details = new HashMap();
+    private LinkedHashMap<String, String> details = new LinkedHashMap<>();
 
 
     public Customer(String firstName, String lastName, String email, int ssn) {
