@@ -34,4 +34,21 @@ abstract public class Input {
         } while (!everythingIsFine);
         return inputInt;
     }
+
+    public static double floatingNumber(String prompt) {
+        double inputDouble = -1;
+        boolean everythingIsFine;
+        do {
+            System.out.print(prompt);
+            try {
+                input = scan.nextLine();
+                inputDouble = Double.parseDouble(input);
+                everythingIsFine = true;
+            } catch (NumberFormatException e) {
+                System.out.println("#invalid input#");
+                everythingIsFine = false;
+            }
+        } while (!everythingIsFine);
+        return inputDouble;
+    }
 }
