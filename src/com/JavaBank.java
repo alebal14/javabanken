@@ -222,7 +222,7 @@ public class JavaBank {
                 System.out.println("\nNamn: "+selectedCustomer.getFirstName()+" "+selectedCustomer.getLastName());
                 System.out.println("Email: "+selectedCustomer.getEmail());
                 System.out.println("Personnummer: "+selectedCustomer.getSocialSecurityNumber());
-                System.out.println("0. Tillbaka");
+                System.out.println("0. Tillbaka\n");
                 input = Input.number("Mata in val: ");
                 validateInput(0);
                 printCustomerOptions();
@@ -300,11 +300,10 @@ public class JavaBank {
                 customerOptionsSelection();
                 break;
             case 1:
-                System.out.println();
-                System.out.println("Account Number: " + selectedAccountOne.getAccountNumber());
+                System.out.println("\nAccount Number: " + selectedAccountOne.getAccountNumber());
                 System.out.println("Account Balance: " + selectedAccountOne.getAccountBalance());
                 System.out.println("Debt: " + selectedAccountOne.getDebt());
-                System.out.println("0. Tillbaka");
+                System.out.println("0. Tillbaka\n");
                 input = Input.number("Mata in val: ");
                 validateInput(0);
                 printAccountOptions();
