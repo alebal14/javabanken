@@ -92,8 +92,9 @@ public class JavaBank {
 
     private void printAccountOptions() {
         System.out.println("----------------------------------------");
-        System.out.println("1. Redigera saldo");
-        System.out.println("2. Redigera skuld");
+        System.out.println("1. Visa Information");
+        System.out.println("2. Redigera saldo");
+        System.out.println("3. Redigera skuld");
         System.out.println("0. Tillbaka\n");
     }
 
@@ -297,6 +298,18 @@ public class JavaBank {
                 printCustomerOptions();
                 input = Input.number("Mata in val: ");
                 customerOptionsSelection();
+                break;
+            case 1:
+                System.out.println();
+                System.out.println("Account Number: " + selectedAccountOne.getAccountNumber());
+                System.out.println("Account Balance: " + selectedAccountOne.getAccountBalance());
+                System.out.println("Debt: " + selectedAccountOne.getDebt());
+                System.out.println("0. Tillbaka");
+                input = Input.number("Mata in val: ");
+                validateInput(0);
+                printAccountOptions();
+                input = Input.number("Mata in val: ");
+                accountOptionsSelection();
                 break;
             default:
                 System.out.println("#invalid input#");
