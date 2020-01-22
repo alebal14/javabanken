@@ -16,6 +16,7 @@ public class JavaBank {
 
     private FileManager fm;
     private int input;
+    private long inputSSN;
     private UniqueRandomNr urn = new UniqueRandomNr();
     private int searchIndex = 0;
     private List<Path> customerSearchResults = new ArrayList<>();
@@ -37,7 +38,7 @@ public class JavaBank {
         fm = new FileManager();
         buildDirectories();
         printMainMenu();
-
+        inputSSN = Input.SSNnumber("Mata in val: ");
         input = Input.number("Mata in val: ");
 
         mainSelection();
@@ -144,8 +145,8 @@ public class JavaBank {
                 mainSelection();
                 break;
             case 5:
-                int number = Input.number("Mata in personnummer: ");
-                Account accountForCust = new Account(urn.randomNumber(), 0, 0, number);
+                long inputSSN = Input.SSNnumber("Mata in personnummer: ");
+                Account accountForCust = new Account(urn.randomNumber(), 0, 0, inputSSN);
                 fm.write("Javabank/Account/" + new Date().getTime() + ".txt", accountForCust.getList());
                 break;
             default:
@@ -274,9 +275,9 @@ public class JavaBank {
             email = Input.string("Mata in E-post adress: ");
         } while (!validateEmail(email));
 
-        int ssn;
+        long ssn;
         do {
-            ssn = Input.number("Mata in personnummer: ");
+            ssn = Input.SSNnumber("Mata in personnummer: ");
         } while (String.valueOf(ssn).length() != 10 && String.valueOf(ssn).length() != 12);
 
         return new Customer(firstName, lastName, email, ssn);
