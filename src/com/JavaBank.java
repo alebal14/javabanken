@@ -6,10 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 public class JavaBank {
@@ -22,14 +19,16 @@ public class JavaBank {
  
     private List<Path> accountSearchResults = new ArrayList<>();
     private Customer selectedCustomer;
-    private Account selectedAccountOne;
-    private Account selectedCustomerTwo;
+    private Path selectedCustomerPath;
+    private Account selectedAccount;
+    private Path selectedAccountPath;
 
     private enum FileProperty {
         FIRSTNAME,
         LASTNAME,
         EMAIL,
-        SSN
+        BALANCE,
+        DEBT
     }
 
     private enum SearchBy {
@@ -170,7 +169,6 @@ public class JavaBank {
                 input = Input.number("Mata in val: ");
                 validateInput(customerSearchResults.size());
                 selectCustomer();
-
                 break;
             case 2:
                 customerSearchResults = searchFiles(Input.string("Mata in söktext: "), fm.listFiles("Javabank/Customer"), SearchBy.SSN);
@@ -200,6 +198,7 @@ public class JavaBank {
             input = Input.number("Mata in val: ");
             searchSelection();
         } else if(input > 0 && input <= customerSearchResults.size()) {
+            selectedCustomerPath = customerSearchResults.get(input-1);
             List<String> customerProperties = new ArrayList<>();
             for(String property:fm.readData(customerSearchResults.get(input-1).toString())) {
                 customerProperties.add(property.split(":")[1]);
@@ -218,11 +217,12 @@ public class JavaBank {
             input = Input.number("Mata in val: ");
             searchSelection();
         } else if(input > 0 && input <= accountSearchResults.size()) {
+            selectedAccountPath = accountSearchResults.get(input-1);
             List<String> accountProperties = new ArrayList<>();
             for(String property:fm.readData(accountSearchResults.get(input-1).toString())) {
                 accountProperties.add(property.split(":")[1]);
             }
-            selectedAccountOne = new Account(Integer.parseInt(accountProperties.get(0)), Double.parseDouble(accountProperties.get(1)), Double.parseDouble(accountProperties.get(2)), Integer.parseInt(accountProperties.get(3)));
+            selectedAccount = new Account(Integer.parseInt(accountProperties.get(0)), Double.parseDouble(accountProperties.get(1)), Double.parseDouble(accountProperties.get(2)), Integer.parseInt(accountProperties.get(3)));
             printAccountOptions();
             input = Input.number("Mata in val: ");
             accountOptionsSelection();
@@ -301,13 +301,22 @@ public class JavaBank {
                 customerOptionsSelection();
                 break;
             case 1:
-                // edit first name
+                editFile(FileProperty.FIRSTNAME);
+                printCustomerEditOptions();
+                input = Input.number("Mata in val: ");
+                customerEditOptionsSelection();
                 break;
             case 2:
-                //  edit last name
+                editFile(FileProperty.LASTNAME);
+                printCustomerEditOptions();
+                input = Input.number("Mata in val: ");
+                customerEditOptionsSelection();
                 break;
             case 3:
-                // edit email
+                editFile(FileProperty.EMAIL);
+                printCustomerEditOptions();
+                input = Input.number("Mata in val: ");
+                customerEditOptionsSelection();
                 break;
             default:
                 System.out.println("#invalid input#");
@@ -325,12 +334,25 @@ public class JavaBank {
                 customerOptionsSelection();
                 break;
             case 1:
-                System.out.println("\nAccount Number: " + selectedAccountOne.getAccountNumber());
-                System.out.println("Account Balance: " + selectedAccountOne.getAccountBalance());
-                System.out.println("Debt: " + selectedAccountOne.getDebt());
+                System.out.println("\nAccount Number: " + selectedAccount.getAccountNumber());
+                System.out.println("Account Balance: " + selectedAccount.getAccountBalance());
+                System.out.println("Debt: " + selectedAccount.getDebt());
                 System.out.println("0. Tillbaka\n");
                 input = Input.number("Mata in val: ");
                 validateInput(0);
+                printAccountOptions();
+                input = Input.number("Mata in val: ");
+                accountOptionsSelection();
+                break;
+            case 2:
+                editFile(FileProperty.BALANCE);
+                printAccountOptions();
+                input = Input.number("Mata in val: ");
+                accountOptionsSelection();
+                break;
+
+            case 3:
+                editFile(FileProperty.DEBT);
                 printAccountOptions();
                 input = Input.number("Mata in val: ");
                 accountOptionsSelection();
@@ -382,6 +404,38 @@ public class JavaBank {
 
     private boolean validateName(String name) {
         return name.matches("[A-Ö][a-ö]*"); // Förstår ungefär
+    }
+
+    private void editFile(FileProperty fileProperty) {
+        if(fileProperty==FileProperty.FIRSTNAME) {
+            fm.delete(selectedCustomerPath.toString());
+            List<String> splitPath = Arrays.asList(selectedCustomerPath.toString().split(selectedCustomer.getFirstName()));
+            selectedCustomer.setFirstName(Input.string("Mata in nytt förnamn: "));
+            fm.write(splitPath.get(0)+selectedCustomer.getFirstName()+splitPath.get(1), selectedCustomer.getList());
+        }
+        if(fileProperty==FileProperty.LASTNAME) {
+            fm.delete(selectedCustomerPath.toString());
+            List<String> splitPath = Arrays.asList(selectedCustomerPath.toString().split(selectedCustomer.getLastName()));
+            selectedCustomer.setLastName(Input.string("Mata in nytt efternamn: "));
+            fm.write(splitPath.get(0)+selectedCustomer.getLastName()+splitPath.get(1), selectedCustomer.getList());
+        }
+        if(fileProperty==FileProperty.EMAIL) {
+            String newEmail = Input.string("Mata in ny email: ");
+            while(!validateEmail(newEmail)) {
+                System.out.println("#invalid email#");
+                newEmail = Input.string("Mata in ny email: ");
+            }
+            selectedCustomer.setEmail(newEmail);
+            fm.write(selectedCustomerPath.toString(), selectedCustomer.getList());
+        }
+        if(fileProperty == FileProperty.BALANCE) {
+            selectedAccount.setAccountBalance(Input.floatingNumber("Mata in nytt saldo: "));
+            fm.write(selectedAccountPath.toString(), selectedAccount.getList());
+        }
+        if(fileProperty == FileProperty.DEBT) {
+            selectedAccount.setDebt(Input.floatingNumber("Mata in ny skuld: "));
+            fm.write(selectedAccountPath.toString(), selectedAccount.getList());
+        }
     }
 /*
     public void editCustomerFile() {
@@ -486,7 +540,7 @@ public class JavaBank {
         }
     }
 
-    private List<Path> searchFiles(String searchTerm, List<Path> filesList, Object searchingFor) {
+    private List<Path> searchFiles(String searchTerm, List<Path> filesList, SearchBy searchBy) {
         List<Path> returnPaths = new ArrayList<>();
 
         Customer customerFile;
@@ -498,11 +552,11 @@ public class JavaBank {
                 customerProperties.add(line.split(":")[1]);
             }
             customerFile = new Customer(customerProperties.get(0), customerProperties.get(1), customerProperties.get(2), Integer.parseInt(customerProperties.get(3)));
-            if(searchingFor == SearchBy.NAME) {
+            if(searchBy == SearchBy.NAME) {
                 if(customerFile.getFirstName().toLowerCase().contains(searchTerm.toLowerCase()) || customerFile.getLastName().toLowerCase().contains(searchTerm.toLowerCase())) {
                     returnPaths.add(filePath);
                 }
-            } else if(searchingFor == SearchBy.SSN) {
+            } else if(searchBy == SearchBy.SSN) {
                 if(String.valueOf(customerFile.getSocialSecurityNumber()).toLowerCase().contains(searchTerm.toLowerCase())) {
 
                     returnPaths.add(filePath);
