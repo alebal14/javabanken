@@ -64,6 +64,7 @@ public class JavaBank {
         System.out.println("3. Redigera");
         System.out.println("4. Skriv ut Personallista");
         System.out.println("5. Skapa account för customer");
+        System.out.println("6. Överföringar");
         System.out.println("0. Avsluta\n");
     }
 
@@ -108,13 +109,9 @@ public class JavaBank {
             case 2:
                 Customer customer = createCustomer();
                 fm.write("Javabank/Customer/" + UUID.randomUUID() + "-" + customer.getFirstName() + "_" + customer.getLastName() + ".txt", customer.getList());
-
                 Account account = new Account(urn.randomNumber(), 0, 0, customer.getSocialSecurityNumber());
                 fm.write("Javabank/Account/" + new Date().getTime() + ".txt", account.getList());
-
                 System.out.println("\nSkapade kund > " + customer.getFirstName() + " " + customer.getLastName() + "\nKonto: " + account.getAccountNumber() + "\n");
-
-
                 printMainMenu();
                 input = Input.number("Mata in val: ");
                 mainSelection();
@@ -147,6 +144,11 @@ public class JavaBank {
                 int number = Input.number("Mata in personnummer: ");
                 Account accountForCust = new Account(urn.randomNumber(), 0, 0, number);
                 fm.write("Javabank/Account/" + new Date().getTime() + ".txt", accountForCust.getList());
+                break;
+            case 6:
+                Transaction trans = new Transaction();
+                trans.getTransaction();
+                trans.getListTransaction();
                 break;
             default:
                 System.out.println("#invalid input#");
