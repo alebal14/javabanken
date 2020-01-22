@@ -150,9 +150,9 @@ public class JavaBank {
                 ArrayList <Transaction> transactions = new ArrayList<>();
                 transactions.add(trans);
 
-                System.out.println("kontonummer" + "\tdatum" + "\ttransaktionsumma"   + "\tsaldo");
+                System.out.println("kontonummer" + "\tdatum" + "\t" + "\ttransaktionsumma"   + "\tsaldo");
                 for( Transaction t : transactions){
-                    System.out.println(t.accountNumber + "\t" + t.date.getYear() + "\t"+  t.transactionsSum + "\t"+ t.balance);
+                    System.out.println(t.accountNumber + "\t" + t.date.getYear() +"-"+ t.date.getMonth() +"-" +t.date.getDay() + "\t"+  t.transactionsSum +"\t" +"\t" +"\t"+ "\t"+ t.balance);
                 }
 
 
