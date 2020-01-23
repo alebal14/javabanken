@@ -33,11 +33,11 @@ public class Customer {
         this.details.put("lastname", lastName);
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return details.get("email");
     }
 
-    public void setEmail (String email){
+    public void setEmail (String email) {
         this.details.put("email", email);
     }
 

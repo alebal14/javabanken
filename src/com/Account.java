@@ -32,7 +32,7 @@ public class Account {
         return Double.parseDouble(details.get("accountbalance"));
     }
 
-    public void setDebt(double debt){
+    public void setDebt(double debt) {
         this.details.put("debt", String.valueOf(debt));
     }
 
