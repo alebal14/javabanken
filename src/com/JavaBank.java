@@ -1,15 +1,12 @@
 package com;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class JavaBank {
 
@@ -242,9 +239,9 @@ public class JavaBank {
                 break;
 
             case 1: // Visa Kundinformation
-                System.out.println("\nNamn: "+selectedCustomer.getFirstName()+" "+selectedCustomer.getLastName());
-                System.out.println("Email: "+selectedCustomer.getEmail());
-                System.out.println("Personnummer: "+selectedCustomer.getSocialSecurityNumber());
+                System.out.println("\nNamn: " + selectedCustomer.getFirstName() + " " + selectedCustomer.getLastName());
+                System.out.println("Email: " + selectedCustomer.getEmail());
+                System.out.println("Personnummer: " + selectedCustomer.getSocialSecurityNumber());
                 System.out.println("0. Tillbaka\n");
                 input = Input.number("Mata in val: ");
                 validateInput(0);
@@ -483,8 +480,8 @@ public class JavaBank {
                 if (customerFile.getFirstName().toLowerCase().contains(searchTerm.toLowerCase()) || customerFile.getLastName().toLowerCase().contains(searchTerm.toLowerCase())) {
                     returnPaths.add(filePath);
                 }
-            } else if(searchBy == SearchBy.SSN) {
-                if(String.valueOf(customerFile.getSocialSecurityNumber()).toLowerCase().contains(searchTerm.toLowerCase())) {
+            } else if (searchBy == SearchBy.SSN) {
+                if (String.valueOf(customerFile.getSocialSecurityNumber()).toLowerCase().contains(searchTerm.toLowerCase())) {
 
                     returnPaths.add(filePath);
                 }
