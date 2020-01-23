@@ -19,9 +19,12 @@ public class JavaBank {
     private List<Path> customerSearchResults = new ArrayList<>();
     private List<Path> accountSearchResults = new ArrayList<>();
     private Customer selectedCustomer;
+    private Customer selectedCustomerTwo;
     private Path selectedCustomerPath;
     private Account selectedAccount;
+    private Account selectedAccountTwo;
     private Path selectedAccountPath;
+    private Path selectedAccountPathTwo;
 
     private enum FileProperty {
         FIRSTNAME,
@@ -199,9 +202,32 @@ public class JavaBank {
         }
     }
 
-    private void transferMoney() {
-        input = Input.number("Ange summa du vill överföra: ");
+    private void selectCustomerTwo() {
+        searchIndex = 0;
+        if (input == 0) {
+            printSearchMenu();
+            input = Input.number("Mata in val: ");
+            searchSelection();
+        } else if (input > 0 && input <= customerSearchResults.size()) {
+            selectedCustomerPath = customerSearchResults.get(input - 1);
+            List<String> customerProperties = new ArrayList<>();
+            for (String property : fm.readData(customerSearchResults.get(input - 1).toString())) {
+                customerProperties.add(property.split(":")[1]);
+            }
+            selectedCustomerTwo = new Customer(customerProperties.get(0), customerProperties.get(1), customerProperties.get(2), Integer.parseInt(customerProperties.get(3)));
 
+        }
+        /*printAccountOptions();
+        input = Input.number("Mata in val: ");
+        accountOptionsSelection();*/
+    }
+
+    private void transferMoney(double transactionSum) {
+        System.out.println();
+        selectedAccount.setAccountBalance(selectedAccount.getAccountBalance()-transactionSum);
+        fm.write(selectedAccountPath.toString(), selectedAccount.getList());
+        selectedAccountTwo.setAccountBalance(selectedAccountTwo.getAccountBalance()+transactionSum);
+        fm.write(selectedAccountPathTwo.toString(), selectedAccountTwo.getList());
     }
 
     private void selectAccount() {
@@ -221,6 +247,25 @@ public class JavaBank {
             input = Input.number("Mata in val: ");
             accountOptionsSelection();
         }
+    }
+
+    private void selectAccountTwo() {
+
+        searchIndex = 0;
+        if (input == 0) {
+            printAccountOptions();
+            input = Input.number("Mata in val: ");
+            accountOptionsSelection();
+        } else if (input > 0 && input <= accountSearchResults.size()) {
+            selectedAccountPathTwo = accountSearchResults.get(input - 1);
+            List<String> accountProperties = new ArrayList<>();
+            for (String property : fm.readData(accountSearchResults.get(input - 1).toString())) {
+                accountProperties.add(property.split(":")[1]);
+            }
+            selectedAccountTwo = new Account(Integer.parseInt(accountProperties.get(0)), Double.parseDouble(accountProperties.get(1)), Double.parseDouble(accountProperties.get(2)), Integer.parseInt(accountProperties.get(3)));
+
+        }
+
     }
 
     private void validateInput(int range) {
@@ -249,7 +294,6 @@ public class JavaBank {
                 input = Input.number("Mata in val: ");
                 customerOptionsSelection();
                 break;
-
             case 2:
                 createAccount(selectedCustomer, 0, 0);
                 System.out.println("Nytt konto skapat");
@@ -352,9 +396,8 @@ public class JavaBank {
                 input = Input.number("Mata in val: ");
                 accountOptionsSelection();
                 break;
-            case 4:
-                System.out.println("1. Sök på ett personummer:");
-                customerSearchResults = searchFiles(Input.string("Mata in siffror: "), fm.listFiles("Javabank/Customer"), SearchBy.SSN);
+            case 4: //Överföring
+                customerSearchResults = searchFiles(Input.string("Mata in personnummer: "), fm.listFiles("Javabank/Customer"), SearchBy.SSN);
                 System.out.println("----------------------------------------");
                 for (Path p : customerSearchResults) {
                     System.out.println(++searchIndex + ". " + p);
@@ -362,9 +405,48 @@ public class JavaBank {
                 System.out.println("0. Tillbaka\n");
                 input = Input.number("Mata in val: ");
                 validateInput(customerSearchResults.size());
-                transferMoney();
+                selectCustomerTwo();
+
+                accountSearchResults = new ArrayList<>();
+                List<String> accountData;
+                for (Path accPath : fm.listFiles("Javabank/Account")) {
+                    accountData = new ArrayList<>();
+                    for (String line : fm.readData(accPath.toString())) {
+                        accountData.add(line.split(":")[1]);
+                    }
+                    if (accountData.get(3).equals(String.valueOf(selectedCustomerTwo.getSocialSecurityNumber()))) {
+                        accountSearchResults.add(accPath);
+                        System.out.println(++searchIndex + ". " + accPath);
+                    }
+                }
                 System.out.println("0. Tillbaka\n");
                 input = Input.number("Mata in val: ");
+                validateInput(accountSearchResults.size());
+                selectAccountTwo();
+                double transactionSum = Input.floatingNumber("Ange hur mycket du vill överföra: ");
+                System.out.println("Vill du genomföra följande överföring? : ");
+                System.out.println("-----------------");
+                System.out.println("Namn" + "\t" + "\t" + "\t" + "\t"   + "Kontonummer" + "\t" + "\t" + "Belopp" + "\t" +  "\t" + "Överföringssumma");
+                System.out.println(selectedCustomer.getFirstName() + " " + selectedCustomer.getLastName() +"\t" + selectedAccount.getAccountNumber() + "\t" + "\t"+ selectedAccount.getAccountBalance() + "\t" +  "\t"  + "\t" + "-" + transactionSum);
+                System.out.println(selectedCustomerTwo.getFirstName() + " " + selectedCustomerTwo.getLastName() +"\t" + selectedAccountTwo.getAccountNumber() +"\t" + "\t"+ selectedAccountTwo.getAccountBalance() + "\t" +  "\t"  + "\t" + "+" + transactionSum);
+
+                System.out.println("1. Ja");
+                System.out.println("0. Nej\n");
+                input = Input.number("Mata in val: ");
+                validateInput(1);
+                    if (input == 0){
+                        printCustomerOptions();
+                        input = Input.number("Mata in val: ");
+                        customerOptionsSelection();
+                    }
+                    else if (input == 1) {
+                        transferMoney(transactionSum);
+                        System.out.println("Överföring genomförd :-)");
+                        printMainMenu();
+                        input = Input.number("Mata in val: ");
+                        mainSelection();
+                    }
+
                 break;
             default:
                 System.out.println("#invalid input#");
