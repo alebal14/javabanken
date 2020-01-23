@@ -83,6 +83,7 @@ public class JavaBank {
         System.out.println("2. Skapa nytt konto");
         System.out.println("3. Redigera personlig information");
         System.out.println("4. Redigera konto information"); // return list of accounts.
+        System.out.println("5. Gör en överföring");
         System.out.println("0. Tillbaka\n");
     }
 
@@ -225,6 +226,11 @@ public class JavaBank {
         }
     }
 
+    private void transferMoney() {
+        input = Input.number("Ange summa du vill överföra: ");
+
+    }
+
     private void selectAccount() {
         searchIndex = 0;
         if (input == 0) {
@@ -299,6 +305,21 @@ public class JavaBank {
                 input = Input.number("Mata in val: ");
                 validateInput(accountSearchResults.size());
                 selectAccount();
+                break;
+            case 5:
+                System.out.println("1. Sök på ett personummer:");
+                customerSearchResults = searchFiles(Input.string("Mata in siffror: "), fm.listFiles("Javabank/Customer"), SearchBy.SSN);
+                System.out.println("----------------------------------------");
+
+                for (Path p : customerSearchResults) {
+                    System.out.println(++searchIndex + ". " + p);
+                }
+                System.out.println("0. Tillbaka\n");
+                input = Input.number("Mata in val: ");
+                validateInput(customerSearchResults.size());
+                transferMoney();
+                System.out.println("0. Tillbaka\n");
+                input = Input.number("Mata in val: ");
                 break;
             default:
                 System.out.println("#invalid input#");
