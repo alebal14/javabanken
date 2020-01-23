@@ -6,20 +6,26 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 public class JavaBank {
 
     private FileManager fm;
     private int input;
     private UniqueRandomNr urn = new UniqueRandomNr();
+
     private int searchIndex = 0;
+
     private List<Path> customerSearchResults = new ArrayList<>();
- 
     private List<Path> accountSearchResults = new ArrayList<>();
+
     private Customer selectedCustomer;
     private Path selectedCustomerPath;
+
     private Account selectedAccount;
     private Path selectedAccountPath;
 
@@ -36,14 +42,13 @@ public class JavaBank {
         SSN
     }
 
-
     JavaBank() {
         fm = new FileManager();
+
         buildDirectories();
+
         printMainMenu();
-
         input = Input.number("Mata in val: ");
-
         mainSelection();
     }
 
@@ -78,10 +83,10 @@ public class JavaBank {
 
     private void printCustomerOptions() {
         System.out.println("----------------------------------------");
-        System.out.println("1. Visa Information");
+        System.out.println("1. Visa Kundinformation");
         System.out.println("2. Skapa nytt konto");
         System.out.println("3. Redigera personlig information");
-        System.out.println("4. Redigera konto information"); // return list of accounts.
+        System.out.println("4. Redigera konto");
         System.out.println("0. Tillbaka\n");
     }
 
@@ -95,7 +100,7 @@ public class JavaBank {
 
     private void printAccountOptions() {
         System.out.println("----------------------------------------");
-        System.out.println("1. Visa Information");
+        System.out.println("1. Visa Kontoinformation");
         System.out.println("2. Redigera saldo");
         System.out.println("3. Redigera skuld");
         System.out.println("0. Tillbaka\n");
@@ -103,48 +108,29 @@ public class JavaBank {
 
     private void mainSelection() {
         switch (input) {
-            case 0:
+            case 0: // Tillbaka
                 break;
-            case 1:
+            case 1: // Sök kund
                 printSearchMenu();
                 input = Input.number("Mata in val: ");
                 searchSelection();
                 break;
-            case 2:
+            case 2: // Skapa kund
                 Customer customer = createCustomer();
                 Account account = createAccount(customer, 0 ,0);
                 System.out.println("\nSkapade kund > " + customer.getFirstName() + " " + customer.getLastName() + "\nKonto: " + account.getAccountNumber()+"\n");
 
-
                 printMainMenu();
                 input = Input.number("Mata in val: ");
                 mainSelection();
                 break;
-            case 3:
-                System.out.println("----------------------------------");
-                System.out.println("Select 1 to search for customer");
-                System.out.println("Select 2 to search for accounts");
-                int choice = Input.number("Mata in val: ");
-                switch (choice) {
-                    case 1:
-                        //editCustomerFile();
-                        break;
-                    case 2:
-                        //editAccountFile();
-                        break;
-                }
-                printMainMenu();
-                input = Input.number("Mata in val: ");
-                mainSelection();
-                break;
-            case 4:
-                // Print personal register.
+            case 3: // Skriv ut personal
                 showStaffmembers();
                 printMainMenu();
                 input = Input.number("Mata in val: ");
                 mainSelection();
                 break;
-            default:
+            default: // invalid input
                 System.out.println("#invalid input#");
                 input = Input.number("Mata in val: ");
                 mainSelection();
@@ -154,12 +140,12 @@ public class JavaBank {
 
     private void searchSelection() {
         switch (input) {
-            case 0:
+            case 0: // Tillbaka
                 printMainMenu();
                 input = Input.number("Mata in val: ");
                 mainSelection();
                 break;
-            case 1:
+            case 1: // Sök namn
                 customerSearchResults = searchFiles(Input.string("Mata in söktext: "), fm.listFiles("Javabank/Customer"), SearchBy.NAME);
                 System.out.println("----------------------------------------");
                 for(Path p:customerSearchResults) {
@@ -170,7 +156,7 @@ public class JavaBank {
                 validateInput(customerSearchResults.size());
                 selectCustomer();
                 break;
-            case 2:
+            case 2: // Sök Personnummer
                 customerSearchResults = searchFiles(Input.string("Mata in siffror: "), fm.listFiles("Javabank/Customer"), SearchBy.SSN);
                 System.out.println("----------------------------------------");
 
@@ -181,9 +167,8 @@ public class JavaBank {
                 input = Input.number("Mata in val: ");
                 validateInput(customerSearchResults.size());
                 selectCustomer();
-
                 break;
-            default:
+            default: // invalid input
                 System.out.println("#invalid input#");
                 input = Input.number("Mata in val: ");
                 searchSelection();
@@ -238,12 +223,12 @@ public class JavaBank {
 
     private void customerOptionsSelection() {
         switch (input) {
-            case 0:
+            case 0: // Tillbaka
                 printSearchMenu();
                 input = Input.number("Mata in val: ");
                 searchSelection();
                 break;
-            case 1:
+            case 1: // Visa Kundinformation
                 System.out.println("\nNamn: "+selectedCustomer.getFirstName()+" "+selectedCustomer.getLastName());
                 System.out.println("Email: "+selectedCustomer.getEmail());
                 System.out.println("Personnummer: "+selectedCustomer.getSocialSecurityNumber());
@@ -254,20 +239,19 @@ public class JavaBank {
                 input = Input.number("Mata in val: ");
                 customerOptionsSelection();
                 break;
-            case 2:
+            case 2: // Skapa nytt konto
                 createAccount(selectedCustomer, 0 ,0);
                 System.out.println("Nytt konto skapat");
                 printCustomerOptions();
                 input = Input.number("Mata in val: ");
                 customerOptionsSelection();
                 break;
-            case 3:
-                // new menu -> edit what? (customer file)
+            case 3: // Redigera personlig information
                 printCustomerEditOptions();
                 input = Input.number("Mata in val: ");
                 customerEditOptionsSelection();
                 break;
-            case 4:
+            case 4: // Redigera konto
                 searchIndex = 0;
                 List<String> accountData;
                 for(Path accPath:fm.listFiles("Javabank/Account")) {
@@ -295,30 +279,30 @@ public class JavaBank {
 
     private void customerEditOptionsSelection() {
         switch (input) {
-            case 0:
+            case 0: // Tillbaka
                 printCustomerOptions();
                 input = Input.number("Mata in val: ");
                 customerOptionsSelection();
                 break;
-            case 1:
+            case 1: // Redigera förnamn
                 editFile(FileProperty.FIRSTNAME);
                 printCustomerEditOptions();
                 input = Input.number("Mata in val: ");
                 customerEditOptionsSelection();
                 break;
-            case 2:
+            case 2: // Redigera efternamn
                 editFile(FileProperty.LASTNAME);
                 printCustomerEditOptions();
                 input = Input.number("Mata in val: ");
                 customerEditOptionsSelection();
                 break;
-            case 3:
+            case 3: // Redigera email
                 editFile(FileProperty.EMAIL);
                 printCustomerEditOptions();
                 input = Input.number("Mata in val: ");
                 customerEditOptionsSelection();
                 break;
-            default:
+            default: // invalid input
                 System.out.println("#invalid input#");
                 input = Input.number("Mata in val: ");
                 customerEditOptionsSelection();
@@ -328,12 +312,12 @@ public class JavaBank {
 
     private void accountOptionsSelection() {
         switch (input) {
-            case 0:
+            case 0: // Tillbaka
                 printCustomerOptions();
                 input = Input.number("Mata in val: ");
                 customerOptionsSelection();
                 break;
-            case 1:
+            case 1: // Visa kontoinformation
                 System.out.println("\nAccount Number: " + selectedAccount.getAccountNumber());
                 System.out.println("Account Balance: " + selectedAccount.getAccountBalance());
                 System.out.println("Debt: " + selectedAccount.getDebt());
@@ -344,20 +328,20 @@ public class JavaBank {
                 input = Input.number("Mata in val: ");
                 accountOptionsSelection();
                 break;
-            case 2:
+            case 2: // Redigera saldo
                 editFile(FileProperty.BALANCE);
                 printAccountOptions();
                 input = Input.number("Mata in val: ");
                 accountOptionsSelection();
                 break;
 
-            case 3:
+            case 3: // Redigera skuld
                 editFile(FileProperty.DEBT);
                 printAccountOptions();
                 input = Input.number("Mata in val: ");
                 accountOptionsSelection();
                 break;
-            default:
+            default: // invalid input
                 System.out.println("#invalid input#");
                 input = Input.number("Mata in val: ");
                 accountOptionsSelection();
@@ -437,91 +421,6 @@ public class JavaBank {
             fm.write(selectedAccountPath.toString(), selectedAccount.getList());
         }
     }
-/*
-    public void editCustomerFile() {
-        int num = Input.number("Mata in personnummer : ");
-        String searchNumber = String.valueOf(num);
-
-        List<String> searchForSSN = fm.find(searchNumber);
-        String fileDir = "";
-        String ssn = "";
-        String accNum = "";
-        for (String path : searchForSSN) {
-            fileDir = path;
-            for (String line : fm.read(path)) {
-                System.out.println(line);
-                if (line.contains("ssn") || line.contains("accNum")) {
-                    ssn = line.substring(4);
-                    accNum = line.substring(13);
-                }
-            }
-        }
-
-        if (fm.read(fileDir).isEmpty()) {
-            System.out.println("Invalid search word!");
-            return;
-        }
-
-        System.out.println("--------------------------");
-        System.out.println("Select 1 to edit account file");
-        System.out.println("Select 2 to edit customer file");
-        int selection = Input.number("Mata in val: ");
-        switch (selection) {
-            case 0:
-                break;
-            case 1: {
-                System.out.println("Mata in ny information");
-                Account account = new Account(
-                        Integer.valueOf(accNum),
-                        Input.number("Mata in account balanace: "),
-                        Input.number("Mata in debt: "),
-                        Integer.valueOf(ssn)
-                );
-                fm.write(fileDir, account.getList());
-                System.out.println("Din information har nu uppdaterats");
-                break;
-            }
-            case 2: {
-                System.out.println("Mata in ny information");
-                Customer customer = new Customer(
-                        Input.string("Mata in förnamn: "),
-                        Input.string("Mata in efternamn: "),
-                        Input.string("Mata in E-post adress: "),
-                        Integer.valueOf(ssn)
-                );
-                fm.write(fileDir, customer.getList());
-                System.out.println("Din information har nu uppdaterats");
-                break;
-            }
-        }
-
-    }
-
-    public void searchSSN() {
-        int num = Input.number("Mata in ett personnummer : ");
-        String searchnumber = String.valueOf(num);
-
-        List<String> searchNumbermethod = fm.find(searchnumber);
-        for (String path : searchNumbermethod) {
-            for (String line : fm.read(path)) {
-                System.out.println(line);
-            }
-            System.out.println();
-        }
-    }
-
-    public void searchNames() {
-        List<String> searchword = fm.find(Input.string("Mata in ett sökord: "));
-        for (String path : searchword) {
-            for (String line : fm.read(path)) {
-                System.out.println(line);
-            }
-            System.out.println();
-        }
-    }
-
- */
-
 
     private void showStaffmembers() {
         BufferedReader reader;
@@ -558,7 +457,6 @@ public class JavaBank {
                 }
             } else if(searchBy == SearchBy.SSN) {
                 if(String.valueOf(customerFile.getSocialSecurityNumber()).toLowerCase().contains(searchTerm.toLowerCase())) {
-
                     returnPaths.add(filePath);
                 }
             }
@@ -566,7 +464,3 @@ public class JavaBank {
         return returnPaths;
     }
 }
-
-
-
-
