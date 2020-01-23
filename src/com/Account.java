@@ -9,9 +9,9 @@ public class Account {
 
     private LinkedHashMap<String, String> details = new LinkedHashMap<>();
 
-    public Account(int accountNumber, double accountBalance, double debt, int ssn) {
+    public Account(int accountNumber, double balance, double debt, int ssn) {
         this.details.put("accountnumber", String.valueOf(accountNumber));
-        this.details.put("accountbalance", String.valueOf(accountBalance));
+        this.details.put("accountbalance", String.valueOf(balance));
         this.details.put("debt", String.valueOf(debt));
         this.details.put("ssn", String.valueOf(ssn));
     }
