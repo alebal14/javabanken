@@ -26,7 +26,6 @@ public class JavaBank {
     private Customer selectedCustomer;
     private String selectedCustomerPath;
     private Customer selectedCustomerTwo;
-    private String selectedCustomerPath;
     private Account selectedAccount;
     private Account selectedAccountTwo;
     private Path selectedAccountPath;
@@ -106,9 +105,9 @@ public class JavaBank {
             case 0: // Tillbaka
                 break;
             case 1: // Sök kund
-                printSearchMenu();
+                printMainMenu();
                 input = Input.number("Mata in val: ");
-                searchSelection();
+                mainSelection();
                 break;
             case 2: // Skapa kund
                 Customer customer = createCustomer();
@@ -172,9 +171,9 @@ public class JavaBank {
     private void selectCustomer() {
         searchIndex = 0;
         if(input == 0) {
-            printSearchMenu();
+            printMainMenu();
             input = Input.number("Mata in val: ");
-            searchSelection();
+            mainSelection();
         } else if(input > 0 && input <= customerSearchResults.size()) {
             selectedCustomerPath = customerSearchResults.get(input-1);
             List<String> customerProperties = new ArrayList<>();
@@ -191,9 +190,9 @@ public class JavaBank {
     private void selectCustomerTwo() {
         searchIndex = 0;
         if (input == 0) {
-            printSearchMenu();
+            printMainMenu();
             input = Input.number("Mata in val: ");
-            searchSelection();
+            mainSelection();
         } else if (input > 0 && input <= customerSearchResults.size()) {
             selectedCustomerPath = customerSearchResults.get(input - 1);
             List<String> customerProperties = new ArrayList<>();
@@ -219,9 +218,9 @@ public class JavaBank {
     private void selectAccount() {
         searchIndex = 0;
         if(input == 0) {
-            printSearchMenu();
+            printMainMenu();
             input = Input.number("Mata in val: ");
-            searchSelection();
+            mainSelection();
         } else if(input > 0 && input <= accountSearchResults.size()) {
             selectedAccountPath = accountSearchResults.get(input-1);
             List<String> accountProperties = new ArrayList<>();
@@ -262,9 +261,9 @@ public class JavaBank {
     private void customerOptionsSelection() {
         switch (input) {
             case 0: // Tillbaka
-                printSearchMenu();
+                printMainMenu();
                 input = Input.number("Mata in val: ");
-                searchSelection();
+                mainSelection();
                 break;
             case 1: // Visa Kundinformation
                 System.out.println("\nNamn: "+selectedCustomer.getFirstName()+" "+selectedCustomer.getLastName());
@@ -377,10 +376,10 @@ public class JavaBank {
                 accountOptionsSelection();
                 break;
             case 4: //Överföring
-                customerSearchResults = searchFiles(Input.string("Mata in personnummer: "), fm.listFiles("Javabank/Customer"), SearchBy.SSN);
+                customerSearchResults = searchCustomers(Input.string("Mata in personnummer: "), SearchBy.SSN);
                 System.out.println("----------------------------------------");
-                for (Path p : customerSearchResults) {
-                    System.out.println(++searchIndex + ". " + p);
+                for (String customer : customerSearchResults) {
+                    System.out.println(++searchIndex + ". " + customer);
                 }
                 System.out.println("0. Tillbaka\n");
                 input = Input.number("Mata in val: ");
