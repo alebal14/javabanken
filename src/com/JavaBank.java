@@ -82,8 +82,7 @@ public class JavaBank {
         System.out.println("1. Visa Information");
         System.out.println("2. Skapa nytt konto");
         System.out.println("3. Redigera personlig information");
-        System.out.println("4. Redigera konto information"); // return list of accounts.
-        System.out.println("5. Gör en överföring");
+        System.out.println("4. Redigera konto information/ Gör en överföring"); // return list of accounts.
         System.out.println("0. Tillbaka\n");
     }
 
@@ -92,6 +91,7 @@ public class JavaBank {
         System.out.println("1. Redigera förnamn");
         System.out.println("2. Redigera efternamn");
         System.out.println("3. Redigera email");
+        System.out.println("4. Gör en överföring");
         System.out.println("0. Tillbaka\n");
     }
 
@@ -306,21 +306,7 @@ public class JavaBank {
                 validateInput(accountSearchResults.size());
                 selectAccount();
                 break;
-            case 5:
-                System.out.println("1. Sök på ett personummer:");
-                customerSearchResults = searchFiles(Input.string("Mata in siffror: "), fm.listFiles("Javabank/Customer"), SearchBy.SSN);
-                System.out.println("----------------------------------------");
 
-                for (Path p : customerSearchResults) {
-                    System.out.println(++searchIndex + ". " + p);
-                }
-                System.out.println("0. Tillbaka\n");
-                input = Input.number("Mata in val: ");
-                validateInput(customerSearchResults.size());
-                transferMoney();
-                System.out.println("0. Tillbaka\n");
-                input = Input.number("Mata in val: ");
-                break;
             default:
                 System.out.println("#invalid input#");
                 input = Input.number("Mata in val: ");
@@ -353,6 +339,21 @@ public class JavaBank {
                 printCustomerEditOptions();
                 input = Input.number("Mata in val: ");
                 customerEditOptionsSelection();
+                break;
+            case 4:
+                System.out.println("1. Sök på ett personummer:");
+                customerSearchResults = searchFiles(Input.string("Mata in siffror: "), fm.listFiles("Javabank/Customer"), SearchBy.SSN);
+                System.out.println("----------------------------------------");
+
+                for (Path p : customerSearchResults) {
+                    System.out.println(++searchIndex + ". " + p);
+                }
+                System.out.println("0. Tillbaka\n");
+                input = Input.number("Mata in val: ");
+                validateInput(customerSearchResults.size());
+                transferMoney();
+                System.out.println("0. Tillbaka\n");
+                input = Input.number("Mata in val: ");
                 break;
             default:
                 System.out.println("#invalid input#");
