@@ -11,8 +11,8 @@ public class Account {
 
     public Account(int accountNumber, double balance, double debt, int ssn) {
         this.details.put("accountnumber", String.valueOf(accountNumber));
-        this.details.put("accountbalance", String.valueOf(0));
-        this.details.put("debt", String.valueOf(0));
+        this.details.put("accountbalance", String.valueOf(balance));
+        this.details.put("debt", String.valueOf(debt));
         this.details.put("ssn", String.valueOf(ssn));
     }
 
