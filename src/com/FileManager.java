@@ -1,6 +1,5 @@
 package com;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -66,42 +65,6 @@ public class FileManager {
             //e.printStackTrace();
         }
         return filesList;
-    }
-
-    public List<String> findFile (String searchTerm, String typeFile){
-
-        List<String> filesList = new ArrayList<>();
-        if(typeFile.equals("customer")){
-            try {
-                Files.list(Paths.get("Javabank/Customer"))
-                        .forEach(path -> filesList.add(path.toString()));
-            } catch (IOException e) {
-
-            }
-        } else if(typeFile.equals("account")) {
-            try {
-                Files.list(Paths.get("Javabank/Account"))
-                        .forEach(path -> filesList.add(path.toString()));
-            } catch (IOException e) {
-
-            }
-        }
-
-        List<String> newFileList = new ArrayList<>();
-
-        for (String path : filesList) {
-            try {
-                List<String> propertyList = Files.readAllLines(Paths.get(path));
-                for (String line : propertyList) {
-                    if (line.contains(searchTerm)) {
-                        newFileList.add(path);
-                    }
-                }
-            } catch (IOException e) {
-
-            }
-        }
-        return newFileList;
     }
 
     public List<String> getFilesPaths(String folderName) throws IOException {
