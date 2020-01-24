@@ -1,12 +1,12 @@
 package com;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FileManager {
 
@@ -31,7 +31,7 @@ public class FileManager {
         }
     }
 
-    public List<String> read(String filePath) {
+    public List<String> readData(String filePath) {
         Path path = Paths.get(filePath);
         List<String> fileData = new ArrayList<>();
         try {
@@ -54,34 +54,17 @@ public class FileManager {
         }
     }
 
-    public List<String> find(String searchTerm) {
-        List<String> filesList = new ArrayList<>();
+    public List<Path> listFiles(String folderPath) {
+        List<Path> filesList = new ArrayList<>();
         try {
-            Files.list(Paths.get("Javabank/Customer"))
-                    .forEach(path -> filesList.add(path.toString()));
-            Files.list(Paths.get("Javabank/Account/"))
-                    .forEach(path -> filesList.add(path.toString()));
-        } catch (IOException e) {
-
-        }
-
-        List<String> newFileList = new ArrayList<>();
-
-        for (String path : filesList) {
-            try {
-                List<String> propertyList = Files.readAllLines(Paths.get(path));
-                for (String line : propertyList) {
-                    if (line.contains(searchTerm)) {
-                        newFileList.add(path);
-                    }
-                }
-            } catch (IOException e) {
-
+            for(Path p:Files.list(Paths.get(folderPath)).collect(Collectors.toList())) {
+                filesList.add(p);
             }
-        }
 
-        //filesList.forEach(System.out::println);
-        return newFileList;
+        } catch (IOException e) {
+            //e.printStackTrace();
+        }
+        return filesList;
     }
 
     public List<String> getFilesPaths(String folderName) throws IOException {

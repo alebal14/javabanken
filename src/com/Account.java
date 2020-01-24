@@ -2,15 +2,16 @@ package com;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class Account {
 
-    private HashMap<String, String> details = new HashMap<>();
+    private LinkedHashMap<String, String> details = new LinkedHashMap<>();
 
-    public Account(int accountNumber, double accountBalance, double debt, int ssn) {
+    public Account(int accountNumber, double balance, double debt, long ssn) {
         this.details.put("accountnumber", String.valueOf(accountNumber));
-        this.details.put("accountbalance", String.valueOf(accountBalance));
+        this.details.put("accountbalance", String.valueOf(balance));
         this.details.put("debt", String.valueOf(debt));
         this.details.put("ssn", String.valueOf(ssn));
     }
@@ -39,12 +40,12 @@ public class Account {
         return Double.parseDouble(details.get("debt"));
     }
 
-    public void setSsn(int ssn) {
+    public void setSsn(long ssn) {
         details.put("ssn", String.valueOf(ssn));
     }
 
-    public int getSsn() {
-        return Integer.parseInt(details.get("ssn"));
+    public long getSSN() {
+        return Long.parseLong(details.get("ssn"));
     }
 
     public List<String> getList() {

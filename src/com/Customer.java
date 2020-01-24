@@ -2,13 +2,14 @@ package com;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class Customer {
-    private HashMap<String, String> details = new HashMap();
+    private LinkedHashMap<String, String> details = new LinkedHashMap<>();
 
 
-    public Customer(String firstName, String lastName, String email, int ssn) {
+    public Customer(String firstName, String lastName, String email, long ssn) {
         details.put("firstname", firstName);
         details.put("lastname", lastName);
         details.put("email", email);
@@ -40,17 +41,17 @@ public class Customer {
         this.details.put("email", email);
     }
 
-    public int getSocialSecurityNumber (){
-        return Integer.parseInt(details.get("ssn"));
+    public long getSocialSecurityNumber (){
+        return Long.parseLong(details.get("ssn"));
     }
 
-    public void setSocialSecurityNumber (int socialSecurityNumber){
+    public void setSocialSecurityNumber (long socialSecurityNumber){
         this.details.put("ssn", String.valueOf(socialSecurityNumber));
     }
 
     public List<String> getList() {
         List<String> detailsList = new ArrayList<>();
-        for(String key:details.keySet()) {
+        for(String key : details.keySet()) {
             detailsList.add(key+":"+details.get(key));
         }
         return detailsList;
