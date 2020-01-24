@@ -127,7 +127,7 @@ public class JavaBank {
         } else if(input > 0 && input <= customerSearchResults.size()) {
             selectedCustomerPath = customerSearchResults.get(input-1);
             List<String> customerProperties = new ArrayList<>();
-            for(String property:fm.readData(customerSearchResults.get(input-1))) {
+            for(String property : fm.readData(customerSearchResults.get(input-1))) {
                 customerProperties.add(property.split(":")[1]);
             }
             selectedCustomer = new Customer(customerProperties.get(0), customerProperties.get(1), customerProperties.get(2), Long.parseLong(customerProperties.get(3)));
@@ -314,7 +314,7 @@ public class JavaBank {
                     mainSelection();
                     break;
                 } else if(input==1) {
-                    customerSearchResults = searchCustomers(Input.string("Mata in personnummer: "), SearchBy.NAME);
+                    customerSearchResults = searchCustomers(Input.string("Mata in söktext: "), SearchBy.NAME);
                 } else if(input==2) {
                     customerSearchResults = searchCustomers(Input.string("Mata in personnummer: "), SearchBy.SSN);
                 }
@@ -328,9 +328,9 @@ public class JavaBank {
                 double transactionSum = Input.floatingNumber("Ange hur mycket du vill överföra: ");
                 System.out.println("Vill du genomföra följande överföring?");
                 System.out.println("----------------------------------------");
-                System.out.println("Namn" + "\t" + "\t" + "\t" + "\t"   + "Kontonummer" + "\t" + "\t" + "Belopp" + "\t" +  "\t" + "Överföringssumma");
-                System.out.println(selectedCustomer.getFirstName() + " " + selectedCustomer.getLastName() +"\t" + selectedAccount.getAccountNumber() + "\t" + "\t"+ selectedAccount.getAccountBalance() + "\t" +  "\t"  + "\t" + "-" + transactionSum);
-                System.out.println(selectedCustomerTwo.getFirstName() + " " + selectedCustomerTwo.getLastName() +"\t" + selectedAccountTwo.getAccountNumber() +"\t" + "\t"+ selectedAccountTwo.getAccountBalance() + "\t" +  "\t"  + "\t" + "+" + transactionSum);
+                System.out.println("Namn" + "\t" + "\t" + "\t"  + "Kontonummer" + "\t" + "\t" + "Belopp" + "\t" + "\t" + "Överföringssumma");
+                System.out.println(selectedCustomer.getFirstName() + " " + selectedCustomer.getLastName() +"\t" + selectedAccount.getAccountNumber() + "\t" + "\t" + selectedAccount.getAccountBalance() + "\t" +  "\t"  + "\t" + "-" + transactionSum);
+                System.out.println(selectedCustomerTwo.getFirstName() + " " + selectedCustomerTwo.getLastName() +"\t" + selectedAccountTwo.getAccountNumber() +"\t" + "\t" + selectedAccountTwo.getAccountBalance() + "\t" +  "\t"  + "\t" + "+" + transactionSum);
                 System.out.println("1. Ja");
                 System.out.println("0. Nej\n");
                 inputRange(1);
@@ -356,19 +356,19 @@ public class JavaBank {
     }
 
     private void editFile(FileProperty fileProperty) {
-        if(fileProperty==FileProperty.FIRSTNAME) {
+        if(fileProperty == FileProperty.FIRSTNAME) {
             fm.delete(selectedCustomerPath);
             List<String> splitPath = Arrays.asList(selectedCustomerPath.split(selectedCustomer.getFirstName()));
             selectedCustomer.setFirstName(Input.string("Mata in nytt förnamn: "));
-            fm.write(splitPath.get(0)+selectedCustomer.getFirstName()+splitPath.get(1), selectedCustomer.getList());
+            fm.write(splitPath.get(0) + selectedCustomer.getFirstName() + splitPath.get(1), selectedCustomer.getList());
         }
-        if(fileProperty==FileProperty.LASTNAME) {
+        if(fileProperty == FileProperty.LASTNAME) {
             fm.delete(selectedCustomerPath);
             List<String> splitPath = Arrays.asList(selectedCustomerPath.split(selectedCustomer.getLastName()));
             selectedCustomer.setLastName(Input.string("Mata in nytt efternamn: "));
-            fm.write(splitPath.get(0)+selectedCustomer.getLastName()+splitPath.get(1), selectedCustomer.getList());
+            fm.write(splitPath.get(0) + selectedCustomer.getLastName() + splitPath.get(1), selectedCustomer.getList());
         }
-        if(fileProperty==FileProperty.EMAIL) {
+        if(fileProperty == FileProperty.EMAIL) {
             String newEmail = Input.string("Mata in ny email: ");
             while(!validateEmail(newEmail)) {
                 System.out.println("#invalid email#");
@@ -388,7 +388,7 @@ public class JavaBank {
     }
 
     private void printPersonnel() {
-        for(String line:fm.readData("Javabank/Personnel/Personnel.txt")) {
+        for(String line : fm.readData("Javabank/Personnel/Personnel.txt")) {
             System.out.println(line);
         }
     }
@@ -430,9 +430,9 @@ public class JavaBank {
         List<String> customerProperties;
         Customer customerFile;
 
-        for(Path filePath:fm.listFiles("Javabank/Customer")) {
+        for(Path filePath : fm.listFiles("Javabank/Customer")) {
             customerProperties = new ArrayList<>();
-            for(String line:fm.readData(filePath.toString())) {
+            for(String line : fm.readData(filePath.toString())) {
                 customerProperties.add(line.split(":")[1]);
             }
             customerFile = new Customer(customerProperties.get(0), customerProperties.get(1), customerProperties.get(2), Long.parseLong(customerProperties.get(3)));
@@ -455,9 +455,9 @@ public class JavaBank {
         List<String> accountData;
         Account accountFile;
 
-        for(Path filePath:fm.listFiles("Javabank/Account")) {
+        for(Path filePath : fm.listFiles("Javabank/Account")) {
             accountData = new ArrayList<>();
-            for(String line:fm.readData(filePath.toString())) {
+            for(String line : fm.readData(filePath.toString())) {
                 accountData.add(line.split(":")[1]);
             }
             accountFile = new Account(Integer.parseInt(accountData.get(0)), Double.parseDouble(accountData.get(1)), Double.parseDouble(accountData.get(2)), Long.parseLong(accountData.get(3)));

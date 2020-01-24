@@ -57,7 +57,7 @@ public class FileManager {
     public List<Path> listFiles(String folderPath) {
         List<Path> filesList = new ArrayList<>();
         try {
-            for(Path p:Files.list(Paths.get(folderPath)).collect(Collectors.toList())) {
+            for(Path p : Files.list(Paths.get(folderPath)).collect(Collectors.toList())) {
                 filesList.add(p);
             }
 
