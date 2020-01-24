@@ -46,7 +46,7 @@ public class JavaBank {
             if(!Files.exists(Paths.get("Javabank")))Files.createDirectory(Paths.get("Javabank"));
             if(!Files.exists(Paths.get("Javabank/Customer")))Files.createDirectory(Paths.get("Javabank/Customer"));
             if(!Files.exists(Paths.get("Javabank/Account")))Files.createDirectory(Paths.get("Javabank/Account"));
-            if(!Files.exists(Paths.get("Javabank/Personnel")))Files.createDirectory(Paths.get("Javabank/Personnel"));
+            if(!Files.exists(Paths.get("Javabank/Personnel")))Files.createDirectory(Paths.get("Javabank/Employees"));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -396,7 +396,7 @@ public class JavaBank {
     }
 
     private void printPersonnel() {
-        for(String line : fm.readData("Javabank/Personnel/Personnel.txt")) {
+        for(String line : fm.readData("Javabank/Employees/Staffmembers.txt")) {
             System.out.println(line);
         }
     }
@@ -498,7 +498,10 @@ public class JavaBank {
             input = Input.number("Mata in val: ");
             mainSelection();
             fm.delete(selectedCustomerPath);
-
+            long ssn = selectedCustomer.getSocialSecurityNumber();
+            for(String path : listAccounts(ssn)){
+                fm.delete(path);
+            }
     }
 
     private void deleteAccount() {
