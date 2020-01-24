@@ -9,7 +9,7 @@ import java.util.*;
 public class JavaBank {
 
     private FileManager fm;
-    private UniqueRandomNr urn = new UniqueRandomNr();
+    private AccountNumber urn = new AccountNumber();
 
     private List<String> customerSearchResults = new ArrayList<>();
     private List<String> accountSearchResults = new ArrayList<>();
