@@ -28,11 +28,6 @@ public class JavaBank {
         DEBT
     }
 
-    private enum SearchBy {
-        NAME,
-        SSN
-    }
-
     JavaBank() {
         fm = new FileManager();
         buildDirectories();
