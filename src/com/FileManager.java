@@ -67,6 +67,7 @@ public class FileManager {
         return filesList;
     }
 
+
     public List<String> searchFiles(String searchFolder, String searchQuery, String key) {
         List<String> searchResults = new ArrayList<>();
 
@@ -81,6 +82,7 @@ public class FileManager {
         }
         return searchResults;
     }
+
 
     public List<String> getFilesPaths(String folderName) throws IOException {
         List<String> paths = new ArrayList<>();
