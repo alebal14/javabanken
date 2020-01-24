@@ -65,6 +65,7 @@ public class JavaBank {
                 Account account = createAccount(customer, 0, 0);
                 System.out.println("\n----------------------------------------");
                 System.out.println("\nSkapade kund > " + customer.getFirstName() + " " + customer.getLastName() + "\nKonto: " + account.getAccountNumber() + "\n");
+
                 System.out.println("----------------------------------------");
                 PrintMenu.main();
                 input = Input.number("Mata in val: ");
@@ -97,10 +98,13 @@ public class JavaBank {
                 mainSelection();
                 break;
             case 1: // Sök namn
-
-
-                customerSearchResults = fm.searchFiles("Javabank/Customer", Input.string("Mata in söktext: "), "firstname");
-
+                String searchQuery = Input.string("Mata in söktext: ");
+                customerSearchResults = fm.searchFiles("Javabank/Customer", searchQuery, "firstname");
+                for(String filePath:fm.searchFiles("Javabank/Customer", searchQuery, "lastname")) {
+                    if(!customerSearchResults.contains(filePath)) {
+                        customerSearchResults.add(filePath);
+                    }
+                }
                 PrintMenu.searchResult(customerSearchResults);
                 inputRange(customerSearchResults.size());
                 selectCustomer();
@@ -108,7 +112,6 @@ public class JavaBank {
             case 2: // Sök Personnummer
 
                 customerSearchResults = fm.searchFiles("Javabank/Customer", Input.string("Mata in söktext: "), "ssn");
-
                 PrintMenu.searchResult(customerSearchResults);
                 inputRange(customerSearchResults.size());
                 selectCustomer();
@@ -122,8 +125,6 @@ public class JavaBank {
     }
 
     private void selectCustomer() {
-
-
         if (input == 0) {
             PrintMenu.main();
             input = Input.number("Mata in val: ");
@@ -160,7 +161,6 @@ public class JavaBank {
 
     private void transferMoney(double transactionSum) {
         System.out.println();
-
         selectedAccount.setAccountBalance(selectedAccount.getAccountBalance() - transactionSum);
         fm.write(selectedAccountPath, selectedAccount.getList());
         selectedAccountTwo.setAccountBalance(selectedAccountTwo.getAccountBalance() + transactionSum);
@@ -168,8 +168,6 @@ public class JavaBank {
     }
 
     private void selectAccount() {
-
-
         if (input == 0) {
             PrintMenu.customerOptions();
             input = Input.number("Mata in val: ");
@@ -211,7 +209,6 @@ public class JavaBank {
                 mainSelection();
                 break;
             case 1: // Visa Kundinformation
-
                 System.out.println("\nNamn: " + selectedCustomer.getFirstName() + " " + selectedCustomer.getLastName());
                 System.out.println("Email: " + selectedCustomer.getEmail());
                 System.out.println("Personnummer: " + selectedCustomer.getSocialSecurityNumber());
@@ -222,8 +219,6 @@ public class JavaBank {
                 customerOptionsSelection();
                 break;
             case 2: // Skapa nytt konto
-
-
                 createAccount(selectedCustomer, 0, 0);
                 System.out.println("Nytt konto skapat");
                 PrintMenu.customerOptions();
@@ -333,7 +328,13 @@ public class JavaBank {
                     break;
 
                 } else if (input == 1) {
-                    customerSearchResults = fm.searchFiles("Javabank/Customer", Input.string("Mata in söktext: "), "firstname");
+                    String searchQuery = Input.string("Mata in söktext: ");
+                    customerSearchResults = fm.searchFiles("Javabank/Customer", searchQuery, "firstname");
+                    for(String filePath:fm.searchFiles("Javabank/Customer", searchQuery, "lastname")) {
+                        if(!customerSearchResults.contains(filePath)) {
+                            customerSearchResults.add(filePath);
+                        }
+                    }
                 } else if (input == 2) {
                     customerSearchResults = fm.searchFiles("Javabank/Customer", Input.string("Mata in söktext: "), "ssn");
 
@@ -458,7 +459,6 @@ public class JavaBank {
         return account;
     }
 
-
     private List<String> listAccounts(long ssn) {
         List<String> searchResults = new ArrayList<>();
         List<String> accountData;
@@ -474,8 +474,8 @@ public class JavaBank {
                 searchResults.add(filePath.toString());
             }
         }
-        return searchResults;    }
-
+        return searchResults;
+    }
 
     private void inputRange(int range) {
         input = Input.number("Mata in val: ");
@@ -511,10 +511,9 @@ public class JavaBank {
         input = Input.number("Mata in val: ");
         customerOptionsSelection();
         fm.delete(selectedAccountPath);
+
+
+
     }
-
-    
-
-
 
 }
