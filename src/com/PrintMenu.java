@@ -29,7 +29,7 @@ abstract public class PrintMenu {
         System.out.println("1. Visa Kundinformation");
         System.out.println("2. Skapa nytt konto");
         System.out.println("3. Redigera personlig information");
-        System.out.println("4. Redigera konto information/ Gör en överföring"); // return list of accounts.
+        System.out.println("4. Redigera konto information/ Gör en överföring");
         System.out.println("0. Tillbaka\n");
     }
 

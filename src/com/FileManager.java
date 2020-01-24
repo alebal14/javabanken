@@ -67,6 +67,21 @@ public class FileManager {
         return filesList;
     }
 
+    public List<String> searchFiles(String searchFolder, String searchQuery, String key) {
+        List<String> searchResults = new ArrayList<>();
+
+        for (Path filePath : listFiles(searchFolder)) {
+            for (String line : readData(filePath.toString())) {
+                if(line.split(":")[0].equals(key)) {
+                    if(line.split(":")[1].toLowerCase().contains(searchQuery.toLowerCase())) {
+                        searchResults.add(filePath.toString());
+                    }
+                }
+            }
+        }
+        return searchResults;
+    }
+
     public List<String> getFilesPaths(String folderName) throws IOException {
         List<String> paths = new ArrayList<>();
         Files.walk(Paths.get(folderName)).forEach(path -> paths.add(path.toString()));
