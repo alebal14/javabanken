@@ -31,6 +31,18 @@ public class FileManager {
         }
     }
 
+    public List<String> edit(String filePath, String key, String value) {
+        List<String> editedData = new ArrayList<>();
+        for(String line:readData(filePath)) {
+            String[] splitLine = line.split(":");
+            if(splitLine[0].equals(key)) {
+                splitLine[1] = value;
+            }
+            editedData.add(splitLine[0]+":"+splitLine[1]);
+        }
+        return  editedData;
+    }
+
     public List<String> readData(String filePath) {
         Path path = Paths.get(filePath);
         List<String> fileData = new ArrayList<>();

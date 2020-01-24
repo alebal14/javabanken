@@ -20,12 +20,9 @@ public class JavaBank {
     private Account selectedAccount, selectedAccountTwo;
     private String selectedCustomerPath, selectedAccountPath, selectedAccountPathTwo;
 
-    private enum FileProperty {
+    private enum Filename {
         FIRSTNAME,
-        LASTNAME,
-        EMAIL,
-        BALANCE,
-        DEBT
+        LASTNAME
     }
 
     JavaBank() {
@@ -240,19 +237,23 @@ public class JavaBank {
                 customerOptionsSelection();
                 break;
             case 1: // Redigera förnamn
-                editFile(FileProperty.FIRSTNAME);
+                renameFile(Filename.FIRSTNAME);
                 PrintMenu.editCustomer();
                 input = Input.number("Mata in val: ");
                 customerEditOptionsSelection();
                 break;
             case 2: // Redigera efternamn
-                editFile(FileProperty.LASTNAME);
+                renameFile(Filename.LASTNAME);
                 PrintMenu.editCustomer();
                 input = Input.number("Mata in val: ");
                 customerEditOptionsSelection();
                 break;
             case 3: // Redigera email
-                editFile(FileProperty.EMAIL);
+                String newEmail = Input.string("Mata in ny email: ");
+                while (validateEmail(newEmail)) {
+                    newEmail = Input.string("Mata in ny email: ");
+                }
+                fm.write(selectedAccountPath, fm.edit(selectedCustomerPath, "email", newEmail));
                 PrintMenu.editCustomer();
                 input = Input.number("Mata in val: ");
                 customerEditOptionsSelection();
@@ -263,6 +264,24 @@ public class JavaBank {
                 customerEditOptionsSelection();
                 break;
         }
+    }
+
+    private void renameFile(Filename filename) {
+        if(filename == Filename.FIRSTNAME) {
+            String[] splitPath = selectedCustomerPath.split(selectedCustomer.getFirstName());
+            List<String> customerData = fm.edit(selectedCustomerPath, "firstname", Input.string("Mata in nytt förnamn: "));
+            fm.delete(selectedCustomerPath);
+            selectedCustomer = new Customer(customerData.get(0).split(":")[1], customerData.get(1).split(":")[1], customerData.get(2).split(":")[1], Long.parseLong(customerData.get(3).split(":")[1]));
+            fm.write(splitPath[0]+selectedCustomer.getFirstName()+splitPath[1], customerData);
+        }
+        if(filename == Filename.LASTNAME) {
+            String[] splitPath = selectedCustomerPath.split(selectedCustomer.getLastName());
+            List<String> customerData = fm.edit(selectedCustomerPath, "lastname", Input.string("Mata in nytt efternamn: "));
+            fm.delete(selectedCustomerPath);
+            selectedCustomer = new Customer(customerData.get(0).split(":")[1], customerData.get(1).split(":")[1], customerData.get(2).split(":")[1], Long.parseLong(customerData.get(3).split(":")[1]));
+            fm.write(splitPath[0]+selectedCustomer.getLastName()+splitPath[1], customerData);
+        }
+
     }
 
     private void accountOptionsSelection() {
@@ -283,14 +302,14 @@ public class JavaBank {
                 accountOptionsSelection();
                 break;
             case 2: // Redigera saldo
-                editFile(FileProperty.BALANCE);
+                //editFile(FileProperty.BALANCE);
                 PrintMenu.accountOptions();
                 input = Input.number("Mata in val: ");
                 accountOptionsSelection();
                 break;
 
             case 3: // Redigera skuld
-                editFile(FileProperty.DEBT);
+                //editFile(FileProperty.DEBT);
                 PrintMenu.accountOptions();
                 input = Input.number("Mata in val: ");
                 accountOptionsSelection();
@@ -346,38 +365,6 @@ public class JavaBank {
                 input = Input.number("Mata in val: ");
                 accountOptionsSelection();
                 break;
-        }
-    }
-
-    private void editFile(FileProperty fileProperty) {
-        if (fileProperty == FileProperty.FIRSTNAME) {
-            fm.delete(selectedCustomerPath);
-            List<String> splitPath = Arrays.asList(selectedCustomerPath.split(selectedCustomer.getFirstName()));
-            selectedCustomer.setFirstName(Input.string("Mata in nytt förnamn: "));
-            fm.write(splitPath.get(0) + selectedCustomer.getFirstName() + splitPath.get(1), selectedCustomer.getList());
-        }
-        if (fileProperty == FileProperty.LASTNAME) {
-            fm.delete(selectedCustomerPath);
-            List<String> splitPath = Arrays.asList(selectedCustomerPath.split(selectedCustomer.getLastName()));
-            selectedCustomer.setLastName(Input.string("Mata in nytt efternamn: "));
-            fm.write(splitPath.get(0) + selectedCustomer.getLastName() + splitPath.get(1), selectedCustomer.getList());
-        }
-        if (fileProperty == FileProperty.EMAIL) {
-            String newEmail = Input.string("Mata in ny email: ");
-            while (!validateEmail(newEmail)) {
-                System.out.println("#invalid email#");
-                newEmail = Input.string("Mata in ny email: ");
-            }
-            selectedCustomer.setEmail(newEmail);
-            fm.write(selectedCustomerPath, selectedCustomer.getList());
-        }
-        if (fileProperty == FileProperty.BALANCE) {
-            selectedAccount.setAccountBalance(Input.floatingNumber("Mata in nytt saldo: "));
-            fm.write(selectedAccountPath, selectedAccount.getList());
-        }
-        if (fileProperty == FileProperty.DEBT) {
-            selectedAccount.setDebt(Input.floatingNumber("Mata in ny skuld: "));
-            fm.write(selectedAccountPath, selectedAccount.getList());
         }
     }
 
