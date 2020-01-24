@@ -46,7 +46,7 @@ public class JavaBank {
             if(!Files.exists(Paths.get("Javabank")))Files.createDirectory(Paths.get("Javabank"));
             if(!Files.exists(Paths.get("Javabank/Customer")))Files.createDirectory(Paths.get("Javabank/Customer"));
             if(!Files.exists(Paths.get("Javabank/Account")))Files.createDirectory(Paths.get("Javabank/Account"));
-            if(!Files.exists(Paths.get("Javabank/Personnel")))Files.createDirectory(Paths.get("Javabank/Employees"));
+            if(!Files.exists(Paths.get("Javabank/Employees")))Files.createDirectory(Paths.get("Javabank/Employees"));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -128,6 +128,7 @@ public class JavaBank {
             selectedCustomerPath = customerSearchResults.get(input-1);
             List<String> customerProperties = new ArrayList<>();
             for(String property : fm.readData(customerSearchResults.get(input-1))) {
+
                 customerProperties.add(property.split(":")[1]);
             }
             selectedCustomer = new Customer(customerProperties.get(0), customerProperties.get(1), customerProperties.get(2), Long.parseLong(customerProperties.get(3)));
@@ -318,7 +319,9 @@ public class JavaBank {
                     mainSelection();
                     break;
                 } else if(input==1) {
+
                     customerSearchResults = searchCustomers(Input.string("Mata in söktext: "), SearchBy.NAME);
+
                 } else if(input==2) {
                     customerSearchResults = searchCustomers(Input.string("Mata in personnummer: "), SearchBy.SSN);
                 }
@@ -332,9 +335,11 @@ public class JavaBank {
                 double transactionSum = Input.floatingNumber("Ange hur mycket du vill överföra: ");
                 System.out.println("Vill du genomföra följande överföring?");
                 System.out.println("----------------------------------------");
+
                 System.out.println("Namn" + "\t" + "\t" + "\t"  + "Kontonummer" + "\t" + "\t" + "Belopp" + "\t" + "\t" + "Överföringssumma");
                 System.out.println(selectedCustomer.getFirstName() + " " + selectedCustomer.getLastName() +"\t" + selectedAccount.getAccountNumber() + "\t" + "\t" + selectedAccount.getAccountBalance() + "\t" +  "\t"  + "\t" + "-" + transactionSum);
                 System.out.println(selectedCustomerTwo.getFirstName() + " " + selectedCustomerTwo.getLastName() +"\t" + selectedAccountTwo.getAccountNumber() +"\t" + "\t" + selectedAccountTwo.getAccountBalance() + "\t" +  "\t"  + "\t" + "+" + transactionSum);
+
                 System.out.println("1. Ja");
                 System.out.println("0. Nej\n");
                 inputRange(1);
@@ -351,10 +356,12 @@ public class JavaBank {
                         mainSelection();
                     }
                 break;
+
             case 5:
                 System.out.println("Konto raderad");
                 deleteAccount();
                 break;
+
             default: // invalid input
                 System.out.println("#invalid input#");
                 input = Input.number("Mata in val: ");
@@ -364,6 +371,7 @@ public class JavaBank {
     }
 
     private void editFile(FileProperty fileProperty) {
+
         if(fileProperty == FileProperty.FIRSTNAME) {
             fm.delete(selectedCustomerPath);
             List<String> splitPath = Arrays.asList(selectedCustomerPath.split(selectedCustomer.getFirstName()));
@@ -377,6 +385,7 @@ public class JavaBank {
             fm.write(splitPath.get(0) + selectedCustomer.getLastName() + splitPath.get(1), selectedCustomer.getList());
         }
         if(fileProperty == FileProperty.EMAIL) {
+
             String newEmail = Input.string("Mata in ny email: ");
             while(!validateEmail(newEmail)) {
                 System.out.println("#invalid email#");
@@ -396,7 +405,9 @@ public class JavaBank {
     }
 
     private void printPersonnel() {
+
         for(String line : fm.readData("Javabank/Employees/Staffmembers.txt")) {
+
             System.out.println(line);
         }
     }
@@ -438,9 +449,11 @@ public class JavaBank {
         List<String> customerProperties;
         Customer customerFile;
 
+
         for(Path filePath : fm.listFiles("Javabank/Customer")) {
             customerProperties = new ArrayList<>();
             for(String line : fm.readData(filePath.toString())) {
+
                 customerProperties.add(line.split(":")[1]);
             }
             customerFile = new Customer(customerProperties.get(0), customerProperties.get(1), customerProperties.get(2), Long.parseLong(customerProperties.get(3)));
@@ -463,6 +476,7 @@ public class JavaBank {
         List<String> accountData;
         Account accountFile;
 
+
         for(Path filePath : fm.listFiles("Javabank/Account")) {
             accountData = new ArrayList<>();
             for(String line : fm.readData(filePath.toString())) {
@@ -483,6 +497,7 @@ public class JavaBank {
             input = Input.number("Mata in val: ");
         }
     }
+
 
     private boolean validateEmail(String email) {
         String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
@@ -509,6 +524,8 @@ public class JavaBank {
             input = Input.number("Mata in val: ");
             customerOptionsSelection();
             fm.delete(selectedAccountPath);
+
+   
     }
 
 }
