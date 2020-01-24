@@ -5,7 +5,7 @@ import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UniqueRandomNr {
+public class AccountNumber {
 
     public List<Integer> getAllAccountsNr() throws IOException {
         List<Integer> currentAccountsNumbers = new ArrayList<>();
