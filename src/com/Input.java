@@ -35,6 +35,23 @@ abstract public class Input {
         return inputInt;
     }
 
+    public static long longNumber(String prompt) {
+        long inputLong = -1;
+        boolean everythingIsFine;
+        do {
+            System.out.print(prompt);
+            try {
+                input = scan.nextLine();
+                inputLong = Long.parseLong(input);
+                everythingIsFine = true;
+            } catch (NumberFormatException e) {
+                System.out.println("#invalid input#");
+                everythingIsFine = false;
+            }
+        } while (!everythingIsFine);
+        return inputLong;
+    }
+
     public static double floatingNumber(String prompt) {
         double inputDouble = -1;
         boolean everythingIsFine;
