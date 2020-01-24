@@ -229,6 +229,10 @@ public class JavaBank {
                 inputRange(accountSearchResults.size());
                 selectAccount();
                 break;
+            case 5: // Radera konto
+                deleteCustomer();
+                System.out.println("Kund raderad");
+                break;
             default:
                 System.out.println("#invalid input#");
                 input = Input.number("Mata in val: ");
@@ -346,6 +350,10 @@ public class JavaBank {
                         input = Input.number("Mata in val: ");
                         mainSelection();
                     }
+                break;
+            case 5:
+                deleteAccount();
+                System.out.println("Konto raderad");
                 break;
             default: // invalid input
                 System.out.println("#invalid input#");
@@ -484,4 +492,21 @@ public class JavaBank {
     private boolean validateName(String name) {
         return name.matches("[A-Ö][a-ö]*");
     }
+
+    private void deleteCustomer() {
+            PrintMenu.main();
+            input = Input.number("Mata in val: ");
+            mainSelection();
+            fm.delete(selectedCustomerPath);
+
+    }
+
+    private void deleteAccount() {
+            PrintMenu.customerOptions();
+            input = Input.number("Mata in val: ");
+            customerOptionsSelection();
+            fm.delete(selectedAccountPath);
+            System.out.println("Konto raderad");
+    }
+
 }

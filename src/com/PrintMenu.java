@@ -30,6 +30,7 @@ abstract public class PrintMenu {
         System.out.println("2. Skapa nytt konto");
         System.out.println("3. Redigera personlig information");
         System.out.println("4. Redigera konto information/ Gör en överföring"); // return list of accounts.
+        System.out.println("5. Radera kund");
         System.out.println("0. Tillbaka\n");
     }
 
@@ -51,6 +52,7 @@ abstract public class PrintMenu {
         System.out.println("2. Redigera saldo");
         System.out.println("3. Redigera skuld");
         System.out.println("4. Gör en överföring");
+        System.out.println("5. Radera konto");
         System.out.println("0. Tillbaka\n");
     }
 
