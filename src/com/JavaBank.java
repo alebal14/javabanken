@@ -99,9 +99,13 @@ public class JavaBank {
                 mainSelection();
                 break;
             case 1: // Sök namn
-
-                customerSearchResults = fm.searchFiles("Javabank/Customer", Input.string("Mata in söktext: "), "firstname");
-
+                String searchQuery = Input.string("Mata in söktext: ");
+                customerSearchResults = fm.searchFiles("Javabank/Customer", searchQuery, "firstname");
+                for(String filePath:fm.searchFiles("Javabank/Customer", searchQuery, "lastname")) {
+                    if(!customerSearchResults.contains(filePath)) {
+                        customerSearchResults.add(filePath);
+                    }
+                }
                 PrintMenu.searchResult(customerSearchResults);
                 inputRange(customerSearchResults.size());
                 selectCustomer();
@@ -327,7 +331,13 @@ public class JavaBank {
                     break;
 
                 } else if (input == 1) {
-                    customerSearchResults = fm.searchFiles("Javabank/Customer", Input.string("Mata in söktext: "), "firstname");
+                    String searchQuery = Input.string("Mata in söktext: ");
+                    customerSearchResults = fm.searchFiles("Javabank/Customer", searchQuery, "firstname");
+                    for(String filePath:fm.searchFiles("Javabank/Customer", searchQuery, "lastname")) {
+                        if(!customerSearchResults.contains(filePath)) {
+                            customerSearchResults.add(filePath);
+                        }
+                    }
                 } else if (input == 2) {
                     customerSearchResults = fm.searchFiles("Javabank/Customer", Input.string("Mata in söktext: "), "ssn");
 
