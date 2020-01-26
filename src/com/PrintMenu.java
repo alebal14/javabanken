@@ -66,4 +66,14 @@ abstract public class PrintMenu {
         }
         System.out.println("0. Tillbaka\n");
     }
+
+    public static void personnel() {
+        System.out.println("\n----------------------------------------");
+        System.out.println("Personal");
+        System.out.println("----------------------------------------");
+        for (String line : FileManager.readData("Javabank/Personnel/personnel.csv")) {
+            System.out.println(line);
+        }
+        System.out.println("\n0. Tillbaka\n");
+    }
 }
