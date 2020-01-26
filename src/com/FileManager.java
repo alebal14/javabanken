@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FileManager {
+abstract public class FileManager {
 
-    public void write(String filePath) {
+    public static void write(String filePath) {
         Path path = Paths.get(filePath);
         try {
             Files.createFile(path);
@@ -19,7 +19,7 @@ public class FileManager {
         }
     }
 
-    public void write(String filePath, List<String> data) {
+    public static void write(String filePath, List<String> data) {
         Path path = Paths.get(filePath);
         try {
             if (!Files.exists(path)) {
@@ -31,7 +31,7 @@ public class FileManager {
         }
     }
 
-    public List<String> readData(String filePath) {
+    public static List<String> readData(String filePath) {
         Path path = Paths.get(filePath);
         List<String> fileData = new ArrayList<>();
         try {
@@ -43,7 +43,7 @@ public class FileManager {
     }
 
 
-    public void delete(String filePath) {
+    public static void delete(String filePath) {
         Path path = Paths.get(filePath);
         if(Files.exists(path)) {
             try {
@@ -54,7 +54,7 @@ public class FileManager {
         }
     }
 
-    public List<Path> listFiles(String folderPath) {
+    public static List<Path> listFiles(String folderPath) {
         List<Path> filesList = new ArrayList<>();
         try {
             for(Path p:Files.list(Paths.get(folderPath)).collect(Collectors.toList())) {
@@ -68,7 +68,7 @@ public class FileManager {
     }
 
 
-    public List<String> searchFiles(String searchFolder, String searchQuery, String key) {
+    public static List<String> searchFiles(String searchFolder, String searchQuery, String key) {
         List<String> searchResults = new ArrayList<>();
 
         for (Path filePath : listFiles(searchFolder)) {
@@ -84,7 +84,7 @@ public class FileManager {
     }
 
 
-    public List<String> getFilesPaths(String folderName) throws IOException {
+    public static List<String> getFilesPaths(String folderName) throws IOException {
         List<String> paths = new ArrayList<>();
         Files.walk(Paths.get(folderName)).forEach(path -> paths.add(path.toString()));
         paths.remove(0);
